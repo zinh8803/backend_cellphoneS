@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('flash_sale', function (Blueprint $table) {
+        Schema::create('flash_sales', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('branch_id')->constrained('branch')->onDelete('cascade');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->string('discount_type')->nullable();
             $table->integer('discount_value')->nullable();
             $table->boolean('is_stackable')->nullable();

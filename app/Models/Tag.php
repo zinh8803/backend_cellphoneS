@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'tag';
-
-    public $timestamps = false;
-
-    protected $fillable = [
-        'id',
-        'name',
-        'slug',
-    ];
+  protected $fillable = [
+    'id',
+    'name',
+    'slug',
+  ];
+  public function productTag()
+  {
+    return $this->belongsToMany(ProductTag::class);
+  }
 }

@@ -8,14 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Brand extends Model
 {
     use HasFactory;
-
-    protected $table = 'brand';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'name',
         'slug',
     ];
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

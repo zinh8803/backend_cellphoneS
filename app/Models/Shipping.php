@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Shipping extends Model
 {
     use HasFactory;
-
-    protected $table = 'shipping';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'order_id',
@@ -21,4 +16,8 @@ class Shipping extends Model
         'shipped_at',
         'delivered_at',
     ];
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

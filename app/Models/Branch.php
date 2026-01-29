@@ -9,13 +9,22 @@ class Branch extends Model
 {
     use HasFactory;
 
-    protected $table = 'branch';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'name',
         'address',
     ];
+
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
+    public function inventoryTransactions()
+    {
+        return $this->hasMany(InventoryTransaction::class);
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

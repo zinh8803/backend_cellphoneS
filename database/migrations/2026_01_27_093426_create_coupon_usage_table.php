@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coupon_usage', function (Blueprint $table) {
+        Schema::create('coupon_usages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('coupon_id')->constrained('coupon')->onDelete('cascade');
+            $table->foreignId('coupon_id')->constrained('coupons')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->timestamps();

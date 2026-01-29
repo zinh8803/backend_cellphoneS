@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class BranchProduct extends Model
 {
     use HasFactory;
-
-    protected $table = 'branch_product';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'branch_id',
@@ -22,4 +17,24 @@ class BranchProduct extends Model
         'status',
         'created_at',
     ];
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+    public function productVariant()
+    {
+        return $this->belongsTo(ProductVariant::class);
+    }
+    public function cartDetails()
+    {
+        return $this->hasMany(CartDetail::class);
+    }
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+    public function flashSales()
+    {
+        return $this->hasMany(FlashSale::class);
+    }
 }

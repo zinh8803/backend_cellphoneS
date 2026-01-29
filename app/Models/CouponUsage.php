@@ -9,10 +9,6 @@ class CouponUsage extends Model
 {
     use HasFactory;
 
-    protected $table = 'coupon_usage';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'coupon_id',
@@ -20,4 +16,16 @@ class CouponUsage extends Model
         'order_id',
         'used_at',
     ];
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

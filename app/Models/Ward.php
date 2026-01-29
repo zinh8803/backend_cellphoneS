@@ -9,13 +9,13 @@ class Ward extends Model
 {
     use HasFactory;
 
-    protected $table = 'ward';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'district_id',
         'name',
     ];
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
 }

@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_address', function (Blueprint $table) {
+        Schema::create('user_addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->text('detail')->nullable();
             $table->string('receiver_name')->nullable();
             $table->string('phone')->nullable();
             $table->boolean('is_default')->nullable();
-            $table->foreignId('city_id')->constrained('city')->onDelete('cascade');
-            $table->foreignId('ward_id')->constrained('ward')->onDelete('cascade');
+            $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
+            $table->foreignId('ward_id')->constrained('wards')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_address');
+        Schema::dropIfExists('user_addresses');
     }
 };

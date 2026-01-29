@@ -9,14 +9,18 @@ class CartDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'cart_detail';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'cart_id',
         'branch_product_id',
         'quantity',
     ];
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class);
+    }
+    public function branchProduct()
+    {
+        return $this->belongsTo(BranchProduct::class);
+    }
 }

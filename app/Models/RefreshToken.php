@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cart extends Model
+class RefreshToken extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'id',
+        'token',
         'user_id',
+        'expires_at',
+        'ip_address',
+        'user_agent',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

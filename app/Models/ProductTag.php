@@ -8,17 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class ProductTag extends Model
 {
     use HasFactory;
-
-    protected $table = 'product_tag';
-
-    public $timestamps = false;
-
-    public $incrementing = false;
-
-    protected $primaryKey = null;
-
     protected $fillable = [
         'product_id',
         'tag_id',
     ];
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+    public function tag()
+    {
+        return $this->belongsTo(Tag::class);
+    }
 }

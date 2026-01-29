@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class InventoryTransaction extends Model
 {
     use HasFactory;
-
-    protected $table = 'inventory_transaction';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'branch_id',
@@ -22,4 +17,12 @@ class InventoryTransaction extends Model
         'created_by',
         'created_at',
     ];
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+    public function inventoryType()
+    {
+        return $this->belongsTo(InventoryType::class);
+    }
 }

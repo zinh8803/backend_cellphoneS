@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class FlashSale extends Model
 {
     use HasFactory;
-
-    protected $table = 'flash_sale';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'branch_product_id',
@@ -23,4 +18,8 @@ class FlashSale extends Model
         'is_stackable',
         'status',
     ];
+    public function branchProduct()
+    {
+        return $this->belongsTo(BranchProduct::class);
+    }
 }

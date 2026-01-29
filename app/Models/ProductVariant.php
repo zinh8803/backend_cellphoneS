@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ProductVariant extends Model
 {
     use HasFactory;
-
-    protected $table = 'product_variant';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'product_id',
@@ -20,4 +15,16 @@ class ProductVariant extends Model
         'storage_id',
         'sku',
     ];
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+    public function color()
+    {
+        return $this->belongsTo(Color::class);
+    }
+    public function storage()
+    {
+        return $this->belongsTo(Storage::class);
+    }
 }
