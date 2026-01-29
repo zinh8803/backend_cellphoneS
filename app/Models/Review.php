@@ -9,10 +9,6 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $table = 'review';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'user_id',
@@ -21,4 +17,12 @@ class Review extends Model
         'comment',
         'created_at',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

@@ -9,10 +9,6 @@ class Coupon extends Model
 {
     use HasFactory;
 
-    protected $table = 'coupon';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'code',
@@ -27,4 +23,8 @@ class Coupon extends Model
         'end_at',
         'status',
     ];
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

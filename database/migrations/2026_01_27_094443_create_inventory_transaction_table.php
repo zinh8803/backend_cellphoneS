@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventory_transaction', function (Blueprint $table) {
+        Schema::create('inventory_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('inventory_type_id')->constrained('inventory_type')->onDelete('cascade');
-            $table->foreignId('branch_id')->constrained('branch')->onDelete('cascade');
+            $table->foreignId('inventory_type_id')->constrained('inventory_types')->onDelete('cascade');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->string('code')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();

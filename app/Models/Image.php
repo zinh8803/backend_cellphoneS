@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     use HasFactory;
-
-    protected $table = 'image';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'url',
     ];
+    public function productImages()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 }

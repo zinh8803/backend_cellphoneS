@@ -8,18 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class ProductImage extends Model
 {
     use HasFactory;
-
-    protected $table = 'product_image';
-
-    public $timestamps = false;
-
-    public $incrementing = false;
-
-    protected $primaryKey = null;
-
     protected $fillable = [
         'product_id',
         'image_id',
         'is_primary',
     ];
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
+    }
 }

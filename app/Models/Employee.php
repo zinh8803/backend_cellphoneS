@@ -9,14 +9,18 @@ class Employee extends Model
 {
     use HasFactory;
 
-    protected $table = 'employee';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'user_id',
         'branch_id',
         'position',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 }

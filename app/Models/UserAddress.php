@@ -9,15 +9,11 @@ class UserAddress extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_address';
-
-    public $timestamps = false;
 
     protected $fillable = [
         'id',
         'user_id',
         'city_id',
-        'district_id',
         'ward_id',
         'detail',
         'receiver_name',
@@ -25,4 +21,16 @@ class UserAddress extends Model
         'is_default',
         'created_at',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+    public function ward()
+    {
+        return $this->belongsTo(Ward::class);
+    }
 }

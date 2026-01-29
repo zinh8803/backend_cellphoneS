@@ -9,12 +9,12 @@ class Storage extends Model
 {
     use HasFactory;
 
-    protected $table = 'storage';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'label',
     ];
+    public function productVariants()
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
 }

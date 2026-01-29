@@ -15,7 +15,7 @@ class User extends Authenticatable
 
     public $incrementing = false;
 
-    public $timestamps = false;
+    // ...existing code...
 
     /**
      * The attributes that are mass assignable.
@@ -49,5 +49,34 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function refreshTokens()
+    {
+        return $this->hasMany(RefreshToken::class);
+    }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+    public function addresses()
+    {
+        return $this->hasMany(UserAddress::class);
+    }
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+    public function couponUsages()
+    {
+        return $this->hasMany(CouponUsage::class);
     }
 }

@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class OrderItem extends Model
 {
     use HasFactory;
-
-    protected $table = 'order_item';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'order_id',
@@ -20,4 +15,12 @@ class OrderItem extends Model
         'quantity',
         'price_snapshot',
     ];
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+    public function branchProduct()
+    {
+        return $this->belongsTo(BranchProduct::class);
+    }
 }

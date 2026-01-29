@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class InventoryTransactionItem extends Model
 {
     use HasFactory;
-
-    protected $table = 'inventory_transaction_item';
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'transaction_id',
@@ -20,4 +15,12 @@ class InventoryTransactionItem extends Model
         'quantity',
         'unit_price',
     ];
+    public function inventoryTransaction()
+    {
+        return $this->belongsTo(InventoryTransaction::class, 'transaction_id');
+    }
+    public function branchProduct()
+    {
+        return $this->belongsTo(BranchProduct::class);
+    }
 }
