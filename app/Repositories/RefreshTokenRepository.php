@@ -18,4 +18,12 @@ class RefreshTokenRepository extends BasicRepository
 
         return $this->paging($query);
     }
+    public function store($data)
+    {
+        return parent::store($data);
+    }
+    public function create(array $data)
+    {
+        return $this->store($data);
+    }
 }

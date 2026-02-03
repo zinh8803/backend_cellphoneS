@@ -43,14 +43,49 @@ class AuthController extends Controller
         return response()->json($users, 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/auth/login",
+     *     summary="Đăng nhập người dùng",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),   
+     *            @OA\Property(property="password", type="string", format="password", example="password123")
+     *        )
+     *    ),
+     *    @OA\Response(
+     *        response=200,
+     *        description="Đăng nhập thành công",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="refresh_token", type="string", example="refresh.token.here"),
+     *             @OA\Property(property="role_id", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Đăng nhập thất bại",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Incorrect account or password")
+     *         )
+     *     )
+     * )
+     */
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
         $result = $this->authService->login($credentials);
         if (!$result) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Incorrect account or password'], 401);
         }
-        return response()->json($result);
+        $user = $this->authService->getByEmail($credentials['email']);
+        $role_id = $user ? $user->role_id : null;
+        return response()->json([
+            'refresh_token' => $result['refresh_token'],
+            'role_id' => $role_id,
+            'token_type' => 'bearer'
+        ])->cookie('token', $result['token'], 60 * 24, null, null, false, true, false, 'Strict');
     }
 
     /**
