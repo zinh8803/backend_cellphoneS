@@ -63,6 +63,17 @@ Mặc định container `app` sẽ:
 - User/Pass: `backend` / `backend`
 - Root pass: `root`
 
+## Tài khoản mặc định khi seed
+
+Sau khi chạy lệnh seed (migrate:fresh --seed), hệ thống sẽ tự tạo sẵn:
+
+- **Admin:**
+    - Email: `admin@gmail.com`
+    - Mật khẩu: `admin123`
+- **User:**
+    - Email: `user@gmail.com`
+    - Mật khẩu: `user123`
+
 ## Một vài lệnh hữu ích
 
 ```bash

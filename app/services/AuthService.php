@@ -2,18 +2,23 @@
 
 namespace App\Services;
 
+use App\Models\RefreshToken;
 use App\Repositories\AuthRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Models\User;
+use App\Repositories\RefreshTokenRepository;
 
 class AuthService
 {
     protected $authRepository;
+    protected $refreshTokenRepository;
 
-    public function __construct(AuthRepository $authRepository)
+    public function __construct(AuthRepository $authRepository, RefreshTokenRepository $refreshTokenRepository)
     {
         $this->authRepository = $authRepository;
+        $this->refreshTokenRepository = $refreshTokenRepository;
     }
 
     public function getAll()
@@ -21,9 +26,14 @@ class AuthService
         return $this->authRepository->all();
     }
 
+    public function getByEmail($email)
+    {
+        return $this->authRepository->getByEmail($email);
+    }
+
     public function register(array $data)
     {
-        $data['password'] = Hash::make($data['password']);
+        $data['password'] = bcrypt($data['password']);
         $data['role_id'] = 2; // Default role_id for regular users
         $user = $this->authRepository->store($data);
         //  $token = $user->createToken('api_token')->plainTextToken;
@@ -39,17 +49,18 @@ class AuthService
         if (!$token) {
             return null;
         }
-        // $refreshToken = Str::random(60);
-        // RefreshToken::create([
-        //     'token' => $refreshToken,
-        //     'user_id' => $user->id,
-        //     'expires_at' => now()->addDays(30),
-        //     'ip_address' => request()->ip(),
-        //     'user_agent' => request()->header('User-Agent'),
-        // ]);
+        $refreshToken = Str::random(60);
+        $this->refreshTokenRepository->store([
+            'token' => $refreshToken,
+            'user_id' => Auth::guard('api')->user()->id,
+            'expires_at' => now()->addDays(30),
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->header('User-Agent'),
+        ]);
+
         return [
             'token' => $token,
-            'token_type' => 'bearer'
+            'refresh_token' => $refreshToken,
         ];
     }
 

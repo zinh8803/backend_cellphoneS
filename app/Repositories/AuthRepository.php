@@ -42,6 +42,8 @@ class AuthRepository extends BasicRepository
         return parent::show($id);
     }
 
+
+
     public function store($data)
     {
         return parent::store($data);
@@ -68,5 +70,9 @@ class AuthRepository extends BasicRepository
     public function create(array $data)
     {
         return $this->store($data);
+    }
+    public function getByEmail($email)
+    {
+        return $this->findByEmail($email);
     }
 }
