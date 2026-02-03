@@ -33,7 +33,7 @@ class AuthService
 
     public function register(array $data)
     {
-        $data['password'] = Hash::make($data['password']);
+        $data['password'] = bcrypt($data['password']);
         $data['role_id'] = 2; // Default role_id for regular users
         $user = $this->authRepository->store($data);
         //  $token = $user->createToken('api_token')->plainTextToken;
