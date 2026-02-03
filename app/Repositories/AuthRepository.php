@@ -7,14 +7,59 @@ use App\Models\User;
 
 class AuthRepository extends BasicRepository
 {
-    protected $model;
     public function __construct(User $user)
     {
-        $this->model = $user;
+        parent::__construct($user);
     }
+
+    public function all($params = [])
+    {
+        return parent::all($params);
+    }
+
+    public function search($params = [])
+    {
+        $query = $this->model->newQuery();
+
+        $keyword = $params['keyword'] ?? request()->get('keyword');
+        if (!empty($keyword)) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%")
+                    ->orWhere('email', 'like', "%{$keyword}%");
+            });
+        }
+
+        $roleId = $params['role_id'] ?? request()->get('role_id');
+        if (!empty($roleId)) {
+            $query->where('role_id', $roleId);
+        }
+
+        return $this->paging($query);
+    }
+
+    public function show($id)
+    {
+        return parent::show($id);
+    }
+
+    public function store($data)
+    {
+        return parent::store($data);
+    }
+
+    public function update($model, $data = [])
+    {
+        return parent::update($model, $data);
+    }
+
+    public function destroy($id)
+    {
+        return parent::destroy($id);
+    }
+
     public function getModel($params = [])
     {
-        return $this->model->get();
+        return $this->all($params);
     }
     public function findByEmail(string $email)
     {
@@ -22,6 +67,6 @@ class AuthRepository extends BasicRepository
     }
     public function create(array $data)
     {
-        return $this->model->create($data);
+        return $this->store($data);
     }
 }

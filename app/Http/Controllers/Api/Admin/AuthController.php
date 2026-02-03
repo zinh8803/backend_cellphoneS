@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Auth\RegisterUser;
-use App\services\AuthService;
-use App\Repositories\AuthRepository;
-use Illuminate\Support\Facades\Log;
+use App\Services\AuthService;
 
 /**
  * @OA\Tag(
@@ -19,11 +17,26 @@ class AuthController extends Controller
 {
     protected $authService;
 
-    public function __construct(AuthRepository $authRepository)
+    public function __construct(AuthService $authService)
     {
-        $this->authService = new AuthService($authRepository);
+        $this->authService = $authService;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/auth/users",
+     *     summary="Lấy danh sách tất cả người dùng",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Danh sách người dùng",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/User")
+     *         )
+     *     )
+     * )
+     */
     public function getAllUser()
     {
         $users = $this->authService->getAll();
@@ -71,7 +84,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $this->authService->logout($request->user());
+        $this->authService->logout();
         return response()->json(['message' => 'Logged out successfully']);
     }
 }

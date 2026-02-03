@@ -40,6 +40,30 @@
                 }
             }
         },
+        "/api/auth/users": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Lấy danh sách tất cả người dùng",
+                "operationId": "05ea44990c6a628610c22c745a144279",
+                "responses": {
+                    "200": {
+                        "description": "Danh sách người dùng",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/auth/register": {
             "post": {
                 "tags": [

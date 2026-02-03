@@ -18,14 +18,14 @@ class AuthService
 
     public function getAll()
     {
-        return $this->authRepository->getModel();
+        return $this->authRepository->all();
     }
 
     public function register(array $data)
     {
         $data['password'] = Hash::make($data['password']);
         $data['role_id'] = 2; // Default role_id for regular users
-        $user = $this->authRepository->create($data);
+        $user = $this->authRepository->store($data);
         //  $token = $user->createToken('api_token')->plainTextToken;
         return [
             'user' => $user,
@@ -53,9 +53,9 @@ class AuthService
         ];
     }
 
-    public function logout($user)
+    public function logout(): bool
     {
-        $user->currentAccessToken()->delete();
+        Auth::guard('api')->logout();
         return true;
     }
 }

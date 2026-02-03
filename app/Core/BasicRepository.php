@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class BasicRepository implements RepositoryInterface
 {
-	protected $model;
+    protected $model;
 
     public function __construct(Model $model)
     {
@@ -16,7 +16,8 @@ class BasicRepository implements RepositoryInterface
 
     public function all($params = [])
     {
-        return $this->model->get();
+        $query = $this->model->newQuery();
+        return $this->paging($query);
     }
 
     public function search($params = [])
