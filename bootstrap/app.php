@@ -12,6 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->prependToGroup('api', [
+            \Illuminate\Http\Middleware\HandleCors::class,
+        ]);
+
         $middleware->appendToGroup('api', [
             \App\Http\Middleware\TransformApiRequest::class,
             \App\Http\Middleware\TransformApiResponse::class,
