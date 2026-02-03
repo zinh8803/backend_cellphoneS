@@ -17,7 +17,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     @OA\Property(property="role_id", type="integer", example=2),
  *     @OA\Property(property="image_url", type="string", format="uri", example="http://localhost/storage/avatar.jpg"),
  *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-06-09T10:00:00Z"),
- *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-06-09T10:00:00Z")
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-06-09T10:00:00Z"),
  * )
  */
 class UserResource extends JsonResource

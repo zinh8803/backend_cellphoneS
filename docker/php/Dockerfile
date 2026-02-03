@@ -1,0 +1,37 @@
+FROM php:8.2-fpm
+
+WORKDIR /var/www
+
+# System deps
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        git \
+        unzip \
+        libzip-dev \
+        zlib1g-dev \
+        libonig-dev \
+        libxml2-dev \
+    && docker-php-ext-install \
+        pdo_mysql \
+        mbstring \
+        bcmath \
+        zip \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && rm -rf /var/lib/apt/lists/*
+
+# Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Local php.ini overrides
+COPY docker/php/local.ini $PHP_INI_DIR/conf.d/local.ini
+
+# Entrypoint
+COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint
+RUN chmod +x /usr/local/bin/entrypoint
+
+EXPOSE 9000
+
+ENTRYPOINT ["entrypoint"]
+
+CMD ["php-fpm"]
