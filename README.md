@@ -25,7 +25,7 @@ Backend API viết bằng Laravel 11, dùng Repository/Service pattern, paging c
 ```bash
 cd e:\laragon\www\backend-cellphones
 docker compose up -d --build
-docker compose exec app php artisan migrate
+docker compose exec app php artisan migrate --seed
 ```
 
 ### Chạy kiểu “production-like” (không bind-mount source)
