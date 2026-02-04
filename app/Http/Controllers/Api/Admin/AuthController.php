@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Auth\RegisterUser;
+use App\Http\Requests\Auth\UpdateAuthRequest;
+use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 
 /**
@@ -85,7 +88,7 @@ class AuthController extends Controller
             'refresh_token' => $result['refresh_token'],
             'role_id' => $role_id,
             'token_type' => 'bearer'
-        ])->cookie('token', $result['token'], 60 * 24, null, null, false, true, false, 'Strict');
+        ])->cookie('token', $result['token'], 60 * 24, null, null, false, true);
     }
 
     /**
@@ -116,6 +119,82 @@ class AuthController extends Controller
         return response()->json($result, 201);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/auth/user",
+     *     summary="Lấy thông tin người dùng hiện tại",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Thông tin người dùng",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     )
+     * )
+     */
+    public function getUser(Request $request)
+    {
+        if (!$request->bearerToken() && $request->hasCookie('token')) {
+            $token = $request->cookie('token');
+            $request->headers->set('Authorization', 'Bearer ' . $token);
+        }
+        $user = $this->authService->getUser();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        return response()->json(new UserResource($user), 200);
+    }
+
+    /**
+     * @OA\Post (
+     *     path="/api/auth/user",
+     *     summary="Cập nhật thông tin người dùng hiện tại",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(ref="#/components/schemas/UpdateAuthRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cập nhật thành công",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Unauthorized")
+     *         )
+     *     )
+     * )
+     */
+    public function updateUser(UpdateAuthRequest $request)
+    {
+        $user = $this->authService->getUser();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        $data = $request->only(['name', 'phone', 'gender', 'image']);
+        $updatedUser = $this->authService->updateUSer($user, $data);
+        return response()->json(new UserResource($updatedUser), 200);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/auth/logout",
+     *     summary="Đăng xuất người dùng",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Đăng xuất thành công",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Logged out successfully")
+     *         )
+     *     )
+     * )
+     */
 
     public function logout(Request $request)
     {

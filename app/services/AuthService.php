@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\ImageHelper;
 use App\Models\RefreshToken;
 use App\Repositories\AuthRepository;
 use Illuminate\Support\Facades\Hash;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Repositories\RefreshTokenRepository;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AuthService
 {
@@ -68,5 +71,34 @@ class AuthService
     {
         Auth::guard('api')->logout();
         return true;
+    }
+
+    public function getUser()
+    {
+        return Auth::guard('api')->user();
+    }
+
+    public function updateUSer($user, $data)
+    {
+        if (isset($data['image']) && $data['image'] instanceof UploadedFile && $data['image']->isValid()) {
+            try {
+                $imageUrl = ImageHelper::uploadImage($data['image'], 'products');
+              //  Log::info('Image uploaded successfully', ['image_url' => $imageUrl]);
+                if ($imageUrl) {
+                    $data['image_url'] = $imageUrl;
+                }
+                unset($data['image']);
+            } catch (\Exception $e) {
+                Log::error('Image upload failed', ['error' => $e->getMessage()]);
+            }
+        }
+        $fields = ['name', 'phone', 'gender', 'image_url'];
+        foreach ($fields as $field) {
+            if (array_key_exists($field, $data)) {
+                $user->$field = $data[$field];
+            }
+        }
+        $user->save();
+        return $user->fresh();
     }
 }

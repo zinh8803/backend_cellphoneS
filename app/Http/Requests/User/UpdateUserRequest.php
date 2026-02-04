@@ -26,12 +26,12 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|nullable|string',
-            'email' => 'sometimes|nullable|string',
-            'password' => 'sometimes|nullable|string',
-            'role_id' => 'sometimes|integer',
-            'image_url' => 'sometimes|nullable|string',
-            'uuid' => 'sometimes|nullable|string',
+            'name' => 'sometimes|nullable|string|max:255',
+            'phone' => 'sometimes|nullable|string|max:20',
+            'gender' => 'sometimes|nullable|in:male,female,other',
+            'status' => 'sometimes|nullable|in:active,inactive',
+            'image_url' => 'sometimes|nullable|url',
+            'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

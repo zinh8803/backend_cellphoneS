@@ -36,7 +36,9 @@ class TransformApiResponse
 
             if ($alreadyWrapped) {
                 $payload['status'] = $payload['status'] ?? $status;
-                return response()->json($payload, $status);
+                $response->setStatusCode($status);
+                $response->setData($payload);
+                return $response;
             }
 
             $message =
@@ -56,12 +58,14 @@ class TransformApiResponse
                 $data = (is_array($payload) && array_key_exists('data', $payload)) ? $payload['data'] : $payload;
             }
 
-            return response()->json([
+            $response->setData([
                 'status' => $status,
                 'message' => $message,
                 'data' => $data,
                 'errors' => $errors,
-            ], $status);
+            ]);
+            $response->setStatusCode($status);
+            return $response;
         }
 
         return $response;

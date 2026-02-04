@@ -35,5 +35,8 @@ class DatabaseSeeder extends Seeder
             'role_id' => $userRole ? $userRole->id : null,
             'password' => bcrypt('user123'),
         ]);
+
+        // Seed wards (and city)
+        $this->call(WardSeeder::class);
     }
 }
