@@ -7,11 +7,39 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8080",
+            "url": "http://localhost:8000",
             "description": "Main API server"
         }
     ],
     "paths": {
+        "/api/ping": {
+            "get": {
+                "tags": [
+                    "Health Check"
+                ],
+                "summary": "Health check endpoint",
+                "description": "Returns a simple pong message to verify that the API is running.",
+                "operationId": "ec46de3798425d731e23605b41ebe2c2",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "pong"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/auth/users": {
             "get": {
                 "tags": [
@@ -29,6 +57,75 @@
                                     "items": {
                                         "$ref": "#/components/schemas/User"
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Đăng nhập người dùng",
+                "operationId": "ab30188b420cffef6b7117d6e4decb92",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Đăng nhập thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "refresh_token": {
+                                            "type": "string",
+                                            "example": "refresh.token.here"
+                                        },
+                                        "role_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Đăng nhập thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Incorrect account or password"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -74,6 +171,99 @@
                                         },
                                         "data": {
                                             "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/user": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Lấy thông tin người dùng hiện tại",
+                "operationId": "324c180abd559f801367533c3bf0e260",
+                "responses": {
+                    "200": {
+                        "description": "Thông tin người dùng",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Cập nhật thông tin người dùng hiện tại",
+                "operationId": "74844c1497cc7dcace9fcaa8de656138",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAuthRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Đăng xuất người dùng",
+                "operationId": "1b9d815a90eaf5d9476864adffeb387a",
+                "responses": {
+                    "200": {
+                        "description": "Đăng xuất thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged out successfully"
                                         }
                                     },
                                     "type": "object"
@@ -9813,34 +10003,6 @@
                     }
                 }
             }
-        },
-        "/api/ping": {
-            "get": {
-                "tags": [
-                    "Health Check"
-                ],
-                "summary": "Health check endpoint",
-                "description": "Returns a simple pong message to verify that the API is running.",
-                "operationId": "ec46de3798425d731e23605b41ebe2c2",
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "pong"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     },
     "components": {
@@ -9869,24 +10031,33 @@
                 },
                 "type": "object"
             },
-            "StoreBranchRequest": {
+            "UpdateAuthRequest": {
                 "properties": {
-                    "name": {
-                        "type": "string"
+                    "_method": {
+                        "description": "Summary of UpdateAuthRequest",
+                        "type": "string",
+                        "example": "PUT"
                     },
-                    "address": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateBranchRequest": {
-                "properties": {
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "John Doe",
+                        "nullable": true
                     },
-                    "address": {
-                        "type": "string"
+                    "phone": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "gender": {
+                        "type": "string",
+                        "example": "male",
+                        "nullable": true
+                    },
+                    "image": {
+                        "description": "Ảnh đại diện người dùng",
+                        "type": "string",
+                        "format": "binary",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -9937,6 +10108,28 @@
                 },
                 "type": "object"
             },
+            "StoreBranchRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateBranchRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "StoreBrandRequest": {
                 "required": [
                     "name",
@@ -9967,22 +10160,6 @@
                 },
                 "type": "object"
             },
-            "StoreCartRequest": {
-                "properties": {
-                    "user_id": {
-                        "type": "integer"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateCartRequest": {
-                "properties": {
-                    "user_id": {
-                        "type": "integer"
-                    }
-                },
-                "type": "object"
-            },
             "StoreCartDetailRequest": {
                 "properties": {
                     "cart_id": {
@@ -10007,6 +10184,22 @@
                     },
                     "quantity": {
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreCartRequest": {
+                "properties": {
+                    "user_id": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateCartRequest": {
+                "properties": {
+                    "user_id": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -10087,6 +10280,40 @@
                 },
                 "type": "object"
             },
+            "StoreCouponUsageRequest": {
+                "properties": {
+                    "coupon_id": {
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "order_id": {
+                        "type": "integer"
+                    },
+                    "used_at": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateCouponUsageRequest": {
+                "properties": {
+                    "coupon_id": {
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "order_id": {
+                        "type": "integer"
+                    },
+                    "used_at": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "StoreCouponRequest": {
                 "properties": {
                     "code": {
@@ -10158,40 +10385,6 @@
                         "type": "string"
                     },
                     "status": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "StoreCouponUsageRequest": {
-                "properties": {
-                    "coupon_id": {
-                        "type": "integer"
-                    },
-                    "user_id": {
-                        "type": "integer"
-                    },
-                    "order_id": {
-                        "type": "integer"
-                    },
-                    "used_at": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateCouponUsageRequest": {
-                "properties": {
-                    "coupon_id": {
-                        "type": "integer"
-                    },
-                    "user_id": {
-                        "type": "integer"
-                    },
-                    "order_id": {
-                        "type": "integer"
-                    },
-                    "used_at": {
                         "type": "string"
                     }
                 },
@@ -10326,6 +10519,40 @@
                 },
                 "type": "object"
             },
+            "StoreInventoryTransactionItemRequest": {
+                "properties": {
+                    "transaction_id": {
+                        "type": "integer"
+                    },
+                    "branch_product_id": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "string"
+                    },
+                    "unit_price": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateInventoryTransactionItemRequest": {
+                "properties": {
+                    "transaction_id": {
+                        "type": "integer"
+                    },
+                    "branch_product_id": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "string"
+                    },
+                    "unit_price": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "StoreInventoryTransactionRequest": {
                 "properties": {
                     "branch_id": {
@@ -10372,40 +10599,6 @@
                 },
                 "type": "object"
             },
-            "StoreInventoryTransactionItemRequest": {
-                "properties": {
-                    "transaction_id": {
-                        "type": "integer"
-                    },
-                    "branch_product_id": {
-                        "type": "integer"
-                    },
-                    "quantity": {
-                        "type": "string"
-                    },
-                    "unit_price": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateInventoryTransactionItemRequest": {
-                "properties": {
-                    "transaction_id": {
-                        "type": "integer"
-                    },
-                    "branch_product_id": {
-                        "type": "integer"
-                    },
-                    "quantity": {
-                        "type": "string"
-                    },
-                    "unit_price": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
             "StoreInventoryTypeRequest": {
                 "properties": {
                     "code": {
@@ -10423,6 +10616,40 @@
                         "type": "string"
                     },
                     "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreOrderItemRequest": {
+                "properties": {
+                    "order_id": {
+                        "type": "integer"
+                    },
+                    "branch_product_id": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "string"
+                    },
+                    "price_snapshot": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateOrderItemRequest": {
+                "properties": {
+                    "order_id": {
+                        "type": "integer"
+                    },
+                    "branch_product_id": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "string"
+                    },
+                    "price_snapshot": {
                         "type": "string"
                     }
                 },
@@ -10480,40 +10707,6 @@
                 },
                 "type": "object"
             },
-            "StoreOrderItemRequest": {
-                "properties": {
-                    "order_id": {
-                        "type": "integer"
-                    },
-                    "branch_product_id": {
-                        "type": "integer"
-                    },
-                    "quantity": {
-                        "type": "string"
-                    },
-                    "price_snapshot": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateOrderItemRequest": {
-                "properties": {
-                    "order_id": {
-                        "type": "integer"
-                    },
-                    "branch_product_id": {
-                        "type": "integer"
-                    },
-                    "quantity": {
-                        "type": "string"
-                    },
-                    "price_snapshot": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
             "StorePaymentRequest": {
                 "properties": {
                     "order_id": {
@@ -10543,6 +10736,90 @@
                         "type": "string"
                     },
                     "paid_at": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreProductImageRequest": {
+                "properties": {
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "image_id": {
+                        "type": "integer"
+                    },
+                    "is_primary": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateProductImageRequest": {
+                "properties": {
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "image_id": {
+                        "type": "integer"
+                    },
+                    "is_primary": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreProductTagRequest": {
+                "properties": {
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "tag_id": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateProductTagRequest": {
+                "properties": {
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "tag_id": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreProductVariantRequest": {
+                "properties": {
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "color_id": {
+                        "type": "integer"
+                    },
+                    "storage_id": {
+                        "type": "integer"
+                    },
+                    "sku": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateProductVariantRequest": {
+                "properties": {
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "color_id": {
+                        "type": "integer"
+                    },
+                    "storage_id": {
+                        "type": "integer"
+                    },
+                    "sku": {
                         "type": "string"
                     }
                 },
@@ -10659,90 +10936,6 @@
                             },
                             "type": "object"
                         }
-                    }
-                },
-                "type": "object"
-            },
-            "StoreProductImageRequest": {
-                "properties": {
-                    "product_id": {
-                        "type": "integer"
-                    },
-                    "image_id": {
-                        "type": "integer"
-                    },
-                    "is_primary": {
-                        "type": "boolean"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateProductImageRequest": {
-                "properties": {
-                    "product_id": {
-                        "type": "integer"
-                    },
-                    "image_id": {
-                        "type": "integer"
-                    },
-                    "is_primary": {
-                        "type": "boolean"
-                    }
-                },
-                "type": "object"
-            },
-            "StoreProductTagRequest": {
-                "properties": {
-                    "product_id": {
-                        "type": "integer"
-                    },
-                    "tag_id": {
-                        "type": "integer"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateProductTagRequest": {
-                "properties": {
-                    "product_id": {
-                        "type": "integer"
-                    },
-                    "tag_id": {
-                        "type": "integer"
-                    }
-                },
-                "type": "object"
-            },
-            "StoreProductVariantRequest": {
-                "properties": {
-                    "product_id": {
-                        "type": "integer"
-                    },
-                    "color_id": {
-                        "type": "integer"
-                    },
-                    "storage_id": {
-                        "type": "integer"
-                    },
-                    "sku": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateProductVariantRequest": {
-                "properties": {
-                    "product_id": {
-                        "type": "integer"
-                    },
-                    "color_id": {
-                        "type": "integer"
-                    },
-                    "storage_id": {
-                        "type": "integer"
-                    },
-                    "sku": {
-                        "type": "string"
                     }
                 },
                 "type": "object"
@@ -10929,52 +11122,6 @@
                 },
                 "type": "object"
             },
-            "StoreUserRequest": {
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    },
-                    "role_id": {
-                        "type": "integer"
-                    },
-                    "image_url": {
-                        "type": "string"
-                    },
-                    "uuid": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateUserRequest": {
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    },
-                    "role_id": {
-                        "type": "integer"
-                    },
-                    "image_url": {
-                        "type": "string"
-                    },
-                    "uuid": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
             "StoreUserAddressRequest": {
                 "properties": {
                     "user_id": {
@@ -11028,6 +11175,52 @@
                         "type": "boolean"
                     },
                     "created_at": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreUserRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "role_id": {
+                        "type": "integer"
+                    },
+                    "image_url": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateUserRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "role_id": {
+                        "type": "integer"
+                    },
+                    "image_url": {
+                        "type": "string"
+                    },
+                    "uuid": {
                         "type": "string"
                     }
                 },
@@ -11975,12 +12168,12 @@
             "description": "CRUD Ward"
         },
         {
-            "name": "Product",
-            "description": "Product"
-        },
-        {
             "name": "Health Check",
             "description": "Health Check"
+        },
+        {
+            "name": "Product",
+            "description": "Product"
         }
     ]
 }

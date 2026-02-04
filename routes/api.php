@@ -25,6 +25,8 @@ Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('user', [AuthController::class, 'getUser']);
+    Route::put('user', [AuthController::class, 'updateUser']);
 });
 
 // Color routes
@@ -94,3 +96,7 @@ Route::prefix('products')->group(function () {
 
 // Dummy ping endpoint for Swagger PathItem
 Route::get('/ping', [ApiDocController::class, 'ping']);
+
+Route::namespace('App\Http\Controllers\Api\Admin')->prefix('admin')->group(function () {});
+
+Route::namespace('App\Http\Controllers\Api\User')->group(function () {});
