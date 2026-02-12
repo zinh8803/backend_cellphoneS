@@ -120,6 +120,43 @@ class AuthController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *     path="/api/auth/refresh-token",
+     *     summary="Làm mới token bằng refresh token",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="refresh_token", type="string", example="refresh.token.here")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Làm mới token thành công",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="token", type="string", example="new.jwt.token.here")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Refresh token không hợp lệ hoặc đã hết hạn",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Invalid or expired refresh token")
+     *         )
+     *     )
+     * )
+     */
+    public function refreshToken(Request $request)
+    {
+        $refreshToken = $request->input('refresh_token');
+        $result = $this->authService->refreshToken($refreshToken);
+        if (!$result) {
+            return response()->json(['message' => 'Invalid or expired refresh token'], 401);
+        }
+        return response()->json($result, 200)->cookie('token', $result['token'], 60 * 24, null, null, false, true);
+    }
+
+    /**
      * @OA\Get(
      *     path="/api/auth/user",
      *     summary="Lấy thông tin người dùng hiện tại",

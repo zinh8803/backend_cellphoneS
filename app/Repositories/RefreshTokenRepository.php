@@ -18,6 +18,12 @@ class RefreshTokenRepository extends BasicRepository
 
         return $this->paging($query);
     }
+
+    public function getByToken($token)
+    {
+        return $this->model->where('token', $token)->first();
+    }
+
     public function store($data)
     {
         return parent::store($data);

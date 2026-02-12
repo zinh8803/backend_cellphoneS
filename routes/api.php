@@ -27,6 +27,7 @@ Route::prefix('auth')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'getUser']);
     Route::put('user', [AuthController::class, 'updateUser']);
+    Route::post('refresh-token', [AuthController::class, 'refreshToken']);
 });
 
 // Color routes
