@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Repositories\RefreshTokenRepository;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthService
 {
@@ -48,14 +49,15 @@ class AuthService
 
     public function login(array $credentials)
     {
-        $token = Auth::guard('api')->attempt($credentials);
-        if (!$token) {
+        if (!$token = JWTAuth::attempt($credentials)) {
             return null;
         }
+
+        $user = JWTAuth::user();
         $refreshToken = Str::random(60);
         $this->refreshTokenRepository->store([
             'token' => $refreshToken,
-            'user_id' => Auth::guard('api')->user()->id,
+            'user_id' => $user->id,
             'expires_at' => now()->addDays(30),
             'ip_address' => request()->ip(),
             'user_agent' => request()->header('User-Agent'),
@@ -67,9 +69,28 @@ class AuthService
         ];
     }
 
+    public function refreshToken($refreshToken)
+    {
+        $storedToken = $this->refreshTokenRepository->getByToken($refreshToken);
+        if (!$storedToken || $storedToken->expires_at < now()) {
+            return null;
+        }
+
+        $user = $storedToken->user;
+        $newToken = JWTAuth::fromUser($user);
+
+        return [
+            'token' => $newToken,
+        ];
+    }
+
     public function logout(): bool
     {
-        Auth::guard('api')->logout();
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken());
+        } catch (\Exception $e) {
+            return false;
+        }
         return true;
     }
 
@@ -83,7 +104,7 @@ class AuthService
         if (isset($data['image']) && $data['image'] instanceof UploadedFile && $data['image']->isValid()) {
             try {
                 $imageUrl = ImageHelper::uploadImage($data['image'], 'products');
-              //  Log::info('Image uploaded successfully', ['image_url' => $imageUrl]);
+                //  Log::info('Image uploaded successfully', ['image_url' => $imageUrl]);
                 if ($imageUrl) {
                     $data['image_url'] = $imageUrl;
                 }
