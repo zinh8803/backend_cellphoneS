@@ -11,6 +11,7 @@ services:
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
 
     app:
+        image: backend-cellphones-php:local
         build:
             context: .
             dockerfile: docker/php/Dockerfile
@@ -19,6 +20,12 @@ services:
         volumes:
             - ./:/var/www
         environment:
+            CONTAINER_ROLE: app
+            WAIT_FOR_DB: "true"
+            AUTO_MIGRATE: "true"
+            AUTO_SEED: "false"
+            AUTO_OPTIMIZE: "true"
+            AUTO_STORAGE_LINK: "true"
             APP_ENV: local
             APP_DEBUG: "true"
             APP_URL: http://localhost:8000
@@ -37,18 +44,24 @@ services:
             REDIS_PORT: 6379
             REDIS_PASSWORD: ""
         depends_on:
-            - mysql
-            - redis
+            mysql:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
 
     queue:
-        build:
-            context: .
-            dockerfile: docker/php/Dockerfile
+        image: backend-cellphones-php:local
         container_name: backend_cellphones_queue
         working_dir: /var/www
         volumes:
             - ./:/var/www
         environment:
+            CONTAINER_ROLE: queue
+            WAIT_FOR_DB: "true"
+            AUTO_MIGRATE: "false"
+            AUTO_SEED: "false"
+            AUTO_OPTIMIZE: "false"
+            AUTO_STORAGE_LINK: "false"
             APP_ENV: local
             APP_DEBUG: "true"
             APP_URL: http://localhost:8000
@@ -67,8 +80,10 @@ services:
             REDIS_PORT: 6379
             REDIS_PASSWORD: ""
         depends_on:
-            - mysql
-            - redis
+            mysql:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
         command:
             [
                 "php",
@@ -80,14 +95,18 @@ services:
             ]
 
     scheduler:
-        build:
-            context: .
-            dockerfile: docker/php/Dockerfile
+        image: backend-cellphones-php:local
         container_name: backend_cellphones_scheduler
         working_dir: /var/www
         volumes:
             - ./:/var/www
         environment:
+            CONTAINER_ROLE: scheduler
+            WAIT_FOR_DB: "true"
+            AUTO_MIGRATE: "false"
+            AUTO_SEED: "false"
+            AUTO_OPTIMIZE: "false"
+            AUTO_STORAGE_LINK: "false"
             APP_ENV: local
             APP_DEBUG: "true"
             APP_URL: http://localhost:8000
@@ -106,8 +125,10 @@ services:
             REDIS_PORT: 6379
             REDIS_PASSWORD: ""
         depends_on:
-            - mysql
-            - redis
+            mysql:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
         command: ["php", "artisan", "schedule:work"]
 
     mysql:
@@ -123,6 +144,21 @@ services:
             - "3307:3306"
         volumes:
             - mysql_data:/var/lib/mysql
+        healthcheck:
+            test:
+                [
+                    "CMD",
+                    "mysqladmin",
+                    "ping",
+                    "-h",
+                    "localhost",
+                    "-uroot",
+                    "-proot",
+                ]
+            interval: 5s
+            timeout: 5s
+            retries: 20
+            start_period: 15s
 
     phpmyadmin:
         image: phpmyadmin:5
@@ -143,6 +179,12 @@ services:
             - "6380:6379"
         volumes:
             - redis_data:/data
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 5s
+            timeout: 3s
+            retries: 20
+            start_period: 5s
 
 volumes:
     mysql_data:
