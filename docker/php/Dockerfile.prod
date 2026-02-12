@@ -1,16 +1,15 @@
-FROM php:8.2-fpm
+FROM php:8.2-fpm-alpine
 
 WORKDIR /var/www
 
 # System deps
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+RUN apk add --no-cache \
         git \
         unzip \
         libzip-dev \
-        zlib1g-dev \
-        libonig-dev \
-        libxml2-dev \
+        oniguruma-dev \
+    && apk add --no-cache --virtual .build-deps \
+        $PHPIZE_DEPS \
     && docker-php-ext-install \
         pdo_mysql \
         mbstring \
@@ -18,7 +17,7 @@ RUN apt-get update \
         zip \
     && pecl install redis \
     && docker-php-ext-enable redis \
-    && rm -rf /var/lib/apt/lists/*
+    && apk del .build-deps
 
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
