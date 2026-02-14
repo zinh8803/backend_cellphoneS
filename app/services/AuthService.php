@@ -54,9 +54,9 @@ class AuthService
         }
 
         $user = JWTAuth::user();
-        $refreshToken = Str::random(60);
+        $refreshToken = Str::random(64);
         $this->refreshTokenRepository->store([
-            'token' => $refreshToken,
+            'token' => Hash::make($refreshToken),
             'user_id' => $user->id,
             'expires_at' => now()->addDays(30),
             'ip_address' => request()->ip(),
@@ -77,18 +77,40 @@ class AuthService
         }
 
         $user = $storedToken->user;
+        $this->refreshTokenRepository->deleteById($storedToken->id);
+
         $newToken = JWTAuth::fromUser($user);
+        $newRefreshToken = Str::random(64);
+        $this->refreshTokenRepository->store([
+            'token' => Hash::make($newRefreshToken),
+            'user_id' => $user->id,
+            'expires_at' => now()->addDays(30),
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->header('User-Agent'),
+        ]);
 
         return [
             'token' => $newToken,
+            'refresh_token' => $newRefreshToken,
         ];
     }
 
-    public function logout(): bool
+    public function logout(?string $refreshToken = null): bool
     {
         try {
+            $user = Auth::guard('api')->user();
+            if ($refreshToken) {
+                $storedToken = $this->refreshTokenRepository->getByToken($refreshToken);
+                if ($storedToken) {
+                    $this->refreshTokenRepository->deleteById($storedToken->id);
+                }
+            } elseif ($user) {
+                $this->refreshTokenRepository->deleteByUserId($user->id);
+            }
+
             JWTAuth::invalidate(JWTAuth::getToken());
         } catch (\Exception $e) {
+            Log::warning('Logout failed', ['message' => $e->getMessage()]);
             return false;
         }
         return true;

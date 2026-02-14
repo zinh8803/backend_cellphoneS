@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RefreshTokenRequest;
 use App\Http\Requests\Auth\RegisterUser;
 use App\Http\Requests\Auth\UpdateAuthRequest;
-use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 
@@ -62,20 +63,31 @@ class AuthController extends Controller
      *        response=200,
      *        description="Đăng nhập thành công",
      *         @OA\JsonContent(
-     *             @OA\Property(property="refresh_token", type="string", example="refresh.token.here"),
-     *             @OA\Property(property="role_id", type="integer", example=1)
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="OK"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="refreshToken", type="string", example="refresh.token.here"),
+     *                 @OA\Property(property="roleId", type="integer", example=1),
+     *                 @OA\Property(property="tokenType", type="string", example="bearer")
+     *             ),
+     *             @OA\Property(property="errors", type="object", nullable=true)
      *         )
      *     ),
      *     @OA\Response(
      *         response=401,
      *         description="Đăng nhập thất bại",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Incorrect account or password")
+     *             @OA\Property(property="status", type="integer", example=401),
+     *             @OA\Property(property="message", type="string", example="Incorrect account or password"),
+     *             @OA\Property(property="data", type="object", nullable=true),
+     *             @OA\Property(property="errors", type="object", nullable=true)
      *         )
      *     )
      * )
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
         $result = $this->authService->login($credentials);
@@ -84,11 +96,12 @@ class AuthController extends Controller
         }
         $user = $this->authService->getByEmail($credentials['email']);
         $role_id = $user ? $user->role_id : null;
+        $cookieSecure = $request->isSecure() || (bool) config('session.secure');
         return response()->json([
             'refresh_token' => $result['refresh_token'],
             'role_id' => $role_id,
             'token_type' => 'bearer'
-        ])->cookie('token', $result['token'], 60 * 24, null, null, false, true);
+        ])->cookie('token', $result['token'], 60 * 24, '/', null, $cookieSecure, true, false, 'Strict');
     }
 
     /**
@@ -134,26 +147,38 @@ class AuthController extends Controller
      *         response=200,
      *         description="Làm mới token thành công",
      *         @OA\JsonContent(
-     *             @OA\Property(property="token", type="string", example="new.jwt.token.here")
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="OK"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="token", type="string", example="new.jwt.token.here"),
+     *                 @OA\Property(property="refreshToken", type="string", example="new.refresh.token.here")
+     *             ),
+     *             @OA\Property(property="errors", type="object", nullable=true)
      *         )
      *     ),
      *     @OA\Response(
      *         response=401,
      *         description="Refresh token không hợp lệ hoặc đã hết hạn",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Invalid or expired refresh token")
+     *             @OA\Property(property="status", type="integer", example=401),
+     *             @OA\Property(property="message", type="string", example="Invalid or expired refresh token"),
+     *             @OA\Property(property="data", type="object", nullable=true),
+     *             @OA\Property(property="errors", type="object", nullable=true)
      *         )
      *     )
      * )
      */
-    public function refreshToken(Request $request)
+    public function refreshToken(RefreshTokenRequest $request)
     {
         $refreshToken = $request->input('refresh_token');
         $result = $this->authService->refreshToken($refreshToken);
         if (!$result) {
             return response()->json(['message' => 'Invalid or expired refresh token'], 401);
         }
-        return response()->json($result, 200)->cookie('token', $result['token'], 60 * 24, null, null, false, true);
+        $cookieSecure = $request->isSecure() || (bool) config('session.secure');
+        return response()->json($result, 200)->cookie('token', $result['token'], 60 * 24, '/', null, $cookieSecure, true, false, 'Strict');
     }
 
     /**
@@ -182,7 +207,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @OA\Post (
+     * @OA\Put (
      *     path="/api/auth/user",
      *     summary="Cập nhật thông tin người dùng hiện tại",
      *     tags={"Auth"},
@@ -227,7 +252,10 @@ class AuthController extends Controller
      *         response=200,
      *         description="Đăng xuất thành công",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Logged out successfully")
+     *             @OA\Property(property="status", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="Logged out successfully"),
+     *             @OA\Property(property="data", type="object", nullable=true),
+     *             @OA\Property(property="errors", type="object", nullable=true)
      *         )
      *     )
      * )
@@ -235,7 +263,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $this->authService->logout();
+        $this->authService->logout($request->input('refresh_token'));
         return response()->json(['message' => 'Logged out successfully']);
     }
 }

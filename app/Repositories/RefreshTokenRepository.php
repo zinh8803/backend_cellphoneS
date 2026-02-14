@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Core\BasicRepository;
 use App\Models\RefreshToken;
+use Illuminate\Support\Facades\Hash;
 
 class RefreshTokenRepository extends BasicRepository
 {
@@ -21,7 +22,30 @@ class RefreshTokenRepository extends BasicRepository
 
     public function getByToken($token)
     {
-        return $this->model->where('token', $token)->first();
+        $candidates = $this->model
+            ->where(function ($query) {
+                $query->whereNull('expires_at')->orWhere('expires_at', '>', now());
+            })
+            ->orderByDesc('id')
+            ->get();
+
+        foreach ($candidates as $candidate) {
+            if ($candidate->token === $token || Hash::check($token, $candidate->token)) {
+                return $candidate;
+            }
+        }
+
+        return null;
+    }
+
+    public function deleteById(int $id): void
+    {
+        $this->model->where('id', $id)->delete();
+    }
+
+    public function deleteByUserId(int $userId): void
+    {
+        $this->model->where('user_id', $userId)->delete();
     }
 
     public function store($data)
