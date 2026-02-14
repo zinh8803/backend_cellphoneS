@@ -4,18 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RefreshToken extends Model
+class SearchHistory extends Model
 {
     protected $fillable = [
-        'token',
         'user_id',
-        'expires_at',
-        'ip_address',
-        'user_agent',
-    ];
-
-    protected $casts = [
-        'expires_at' => 'datetime',
+        'keyword',
     ];
 
     public function user()
