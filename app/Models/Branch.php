@@ -12,7 +12,9 @@ class Branch extends Model
     protected $fillable = [
         'id',
         'name',
-        'address',
+        'detail',
+        'city_id',
+        'ward_id',
     ];
 
     public function employees()
@@ -26,5 +28,15 @@ class Branch extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function ward()
+    {
+        return $this->belongsTo(Ward::class);
     }
 }

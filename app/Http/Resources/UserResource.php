@@ -39,6 +39,7 @@ class UserResource extends JsonResource
             'status' => $this->status,
             'image_url' => $this->image_url,
             'role' => new RoleResource($this->role),
+            'employee' => new EmployeeResource($this->employee),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
