@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\BranchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -7,6 +8,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\BrandController;
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\ColorController;
+use App\Http\Controllers\Api\Admin\EmployeeController;
 use App\Http\Controllers\Api\Admin\ImageController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\TagController;
@@ -43,6 +45,30 @@ Route::prefix('colors')->group(function () {
         Route::post('/', [ColorController::class, 'store']);
         Route::put('/{id}', [ColorController::class, 'update']);
         Route::delete('/{id}', [ColorController::class, 'destroy']);
+    });
+});
+
+// Branch routes
+Route::prefix('branches')->group(function () {
+    Route::get('/', [BranchController::class, 'index']);
+    Route::get('/search', [BranchController::class, 'search']);
+    Route::get('/{id}', [BranchController::class, 'show']);
+    Route::middleware(['auth:api', 'admin'])->group(function () {
+        Route::post('/', [BranchController::class, 'store']);
+        Route::put('/{id}', [BranchController::class, 'update']);
+        Route::delete('/{id}', [BranchController::class, 'destroy']);
+    });
+});
+
+// Employee routes
+Route::prefix('employees')->group(function () {
+    Route::get('/', [EmployeeController::class, 'index']);
+    Route::get('/search', [EmployeeController::class, 'search']);
+    Route::get('/{id}', [EmployeeController::class, 'show']);
+    Route::middleware(['auth:api', 'admin'])->group(function () {
+        Route::post('/', [EmployeeController::class, 'store']);
+        Route::put('/{id}', [EmployeeController::class, 'update']);
+        Route::delete('/{id}', [EmployeeController::class, 'destroy']);
     });
 });
 

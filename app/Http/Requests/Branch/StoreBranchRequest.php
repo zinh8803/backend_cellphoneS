@@ -9,7 +9,9 @@ use Illuminate\Foundation\Http\FormRequest;
  *     schema="StoreBranchRequest",
  *     type="object",
  *     @OA\Property(property="name", type="string"),
- *     @OA\Property(property="address", type="string"),
+ *     @OA\Property(property="detail", type="string"),
+ *     @OA\Property(property="city_id", type="integer"),
+ *     @OA\Property(property="ward_id", type="integer"),
  * )
  */
 class StoreBranchRequest extends FormRequest
@@ -23,7 +25,9 @@ class StoreBranchRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|nullable|string',
-            'address' => 'sometimes|nullable|string',
+            'detail' => 'sometimes|nullable|string',
+            'city_id' => 'required|exists:cities,id',
+            'ward_id' => 'required|exists:wards,id',
         ];
     }
 }

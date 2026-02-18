@@ -25,9 +25,9 @@ class AuthService
         $this->refreshTokenRepository = $refreshTokenRepository;
     }
 
-    public function getAll()
+    public function getAll($params = [])
     {
-        return $this->authRepository->all();
+        return $this->authRepository->all($params);
     }
 
     public function getByEmail($email)

@@ -41,10 +41,13 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function getAllUser()
+    public function getAllUser(Request $request)
     {
-        $users = $this->authService->getAll();
-        return response()->json($users, 200);
+        $users = $this->authService->getAll($request->all());
+        return response()->json([
+            'items' => UserResource::collection(collect($users['items'])),
+            'paginate' => $users['paginate'] ?? null,
+        ], 200);
     }
 
     /**
