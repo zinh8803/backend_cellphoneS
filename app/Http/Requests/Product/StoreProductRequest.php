@@ -3,27 +3,30 @@
 namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @OA\Schema(
  *     schema="StoreProductRequest",
  *     required={"name","brand_id","category_id"},
- *     @OA\Property(property="name", type="string", example="iPhone 15"),
- *     @OA\Property(property="slug", type="string", example="iphone-15"),
- *     @OA\Property(property="description", type="string", example="..."),
- *     @OA\Property(property="brand_id", type="integer", example=1),
- *     @OA\Property(property="category_id", type="integer", example=1),
- *     @OA\Property(property="tag_ids", type="array", @OA\Items(type="integer"), example={1,2}),
+ *     @OA\Property(property="name", type="string", example="iPhone 15", description="Tên sản phẩm"),
+ *     @OA\Property(property="slug", type="string", example="iphone-15", description="Slug sản phẩm"),
+ *     @OA\Property(property="description", type="string", example="...", description="Mô tả sản phẩm"),
+ *     @OA\Property(property="brand_id", type="integer", example=1, description="ID thương hiệu"),
+ *     @OA\Property(property="category_id", type="integer", example=1, description="ID danh mục"),
  *     @OA\Property(
- *         property="images",
+ *         property="tag_ids[]",
  *         type="array",
- *         @OA\Items(
- *             type="object",
- *             @OA\Property(property="id", type="integer", example=1),
- *             @OA\Property(property="url", type="string", example="https://example.com/image.jpg"),
- *             @OA\Property(property="is_primary", type="boolean", example=true),
- *         )
+ *         description="Danh sách tag id (key lặp: tag_ids[])",
+ *         @OA\Items(type="integer"),
+ *         example={1,2}
  *     ),
+ *     @OA\Property(
+ *         property="image_files[]",
+ *         type="array",
+ *         description="Danh sách ảnh upload (key lặp: image_files[])",
+ *         @OA\Items(type="string", format="binary")
+ *     )
  * )
  */
 class StoreProductRequest extends FormRequest
@@ -41,14 +44,32 @@ class StoreProductRequest extends FormRequest
             'description' => 'nullable|string',
             'brand_id' => 'required|integer|exists:brands,id',
             'category_id' => 'required|integer|exists:categories,id',
-            'tag_ids' => 'sometimes|array',
-            'tag_ids.*' => 'integer|exists:tags,id',
-            'image_ids' => 'sometimes|array',
-            'image_ids.*' => 'integer|exists:images,id',
-            'images' => 'sometimes|array',
-            'images.*.id' => 'sometimes|integer|exists:images,id',
-            'images.*.url' => 'sometimes|string',
-            'images.*.is_primary' => 'sometimes|boolean',
+            'tag_ids' => 'sometimes|nullable|array',
+            'tag_ids.*' => 'nullable|integer|exists:tags,id',
+            'image_files' => [
+                'sometimes',
+                function ($attribute, $value, $fail) {
+                    if ($value instanceof UploadedFile) {
+                        if (!$value->isValid()) {
+                            $fail('File ảnh không hợp lệ.');
+                        }
+                        return;
+                    }
+
+                    if (is_array($value)) {
+                        foreach ($value as $file) {
+                            if (!$file instanceof UploadedFile || !$file->isValid()) {
+                                $fail('Mỗi phần tử image_files phải là file ảnh hợp lệ.');
+                                return;
+                            }
+                        }
+                        return;
+                    }
+
+                    $fail('image_files phải là file hoặc mảng file ảnh.');
+                },
+            ],
+            'image_files.*' => 'image|max:5120',
         ];
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Helpers\ImageHelper;
 use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\ProductRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProductService
 {
@@ -86,43 +88,55 @@ class ProductService
             }
         }
 
-        // Support two formats:
-        // 1) image_ids: [1,2]
-        // 2) images: [{"id":1,"is_primary":true}] or [{"url":"http...","is_primary":true}]
-        if (array_key_exists('image_ids', $data) && is_array($data['image_ids'])) {
-            $product->productImages()->delete();
-            foreach ($data['image_ids'] as $index => $imageId) {
-                if (!empty($imageId)) {
-                    $product->productImages()->create([
-                        'image_id' => $imageId,
-                        'is_primary' => $index === 0,
-                    ]);
-                }
+        // Support form-data image_files only: [UploadedFile, ...] (upload Cloudinary)
+        if (array_key_exists('image_files', $data)) {
+            $uploadedFiles = $this->extractUploadedFiles($data['image_files']);
+
+            if (empty($uploadedFiles)) {
+                return;
             }
-        }
 
-        if (array_key_exists('images', $data) && is_array($data['images'])) {
             $product->productImages()->delete();
 
-            foreach ($data['images'] as $index => $img) {
-                if (!is_array($img)) {
+            $savedCount = 0;
+            foreach ($uploadedFiles as $file) {
+                if (!$file instanceof UploadedFile || !$file->isValid()) {
                     continue;
                 }
 
-                $imageId = $img['id'] ?? null;
-                $url = $img['url'] ?? null;
-
-                if (empty($imageId) && !empty($url)) {
-                    $imageId = Image::query()->create(['url' => $url])->id;
+                $imageUrl = ImageHelper::uploadImage($file, 'products');
+                if (empty($imageUrl)) {
+                    continue;
                 }
 
-                if (!empty($imageId)) {
-                    $product->productImages()->create([
-                        'image_id' => $imageId,
-                        'is_primary' => (bool) ($img['is_primary'] ?? ($index === 0)),
-                    ]);
-                }
+                $imageId = Image::query()->create(['url' => $imageUrl])->id;
+                $product->productImages()->create([
+                    'image_id' => $imageId,
+                    'is_primary' => $savedCount === 0,
+                ]);
+
+                $savedCount++;
             }
         }
+    }
+
+    private function extractUploadedFiles(mixed $files): array
+    {
+        if ($files instanceof UploadedFile) {
+            return [$files];
+        }
+
+        if (!is_array($files)) {
+            return [];
+        }
+
+        $result = [];
+        array_walk_recursive($files, function ($file) use (&$result) {
+            if ($file instanceof UploadedFile) {
+                $result[] = $file;
+            }
+        });
+
+        return $result;
     }
 }
