@@ -7,6 +7,7 @@ use App\Http\Requests\BranchProduct\StoreBranchProductRequest;
 use App\Http\Requests\BranchProduct\UpdateBranchProductRequest;
 use App\Http\Resources\BranchProductResource;
 use App\Services\BranchProductService;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 
 /**
@@ -126,7 +127,7 @@ class BranchProductController extends Controller
      */
     public function store(StoreBranchProductRequest $request)
     {
-        $model = $this->BranchProductService->store($request->all());
+        $model = $this->BranchProductService->store($request->validated());
         return response()->json(['data' => new BranchProductResource($model)], 201);
     }
 
@@ -147,7 +148,7 @@ class BranchProductController extends Controller
      */
     public function update(UpdateBranchProductRequest $request, $id)
     {
-        $model = $this->BranchProductService->update($id, $request->all());
+        $model = $this->BranchProductService->update($id, $request->validated());
         if (!$model) {
             return response()->json(['message' => 'Not found'], 404);
         }

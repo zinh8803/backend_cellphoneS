@@ -11,7 +11,6 @@ use Illuminate\Foundation\Http\FormRequest;
  *     @OA\Property(property="product_id", type="integer"),
  *     @OA\Property(property="color_id", type="integer"),
  *     @OA\Property(property="storage_id", type="integer"),
- *     @OA\Property(property="sku", type="string"),
  * )
  */
 class StoreProductVariantRequest extends FormRequest
@@ -24,10 +23,9 @@ class StoreProductVariantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'sometimes|integer',
-            'color_id' => 'sometimes|integer',
-            'storage_id' => 'sometimes|integer',
-            'sku' => 'sometimes|nullable|string',
+            'product_id' => 'required|integer|exists:products,id',
+            'color_id' => 'required|integer|exists:colors,id',
+            'storage_id' => 'required|integer|exists:storages,id',
         ];
     }
 }

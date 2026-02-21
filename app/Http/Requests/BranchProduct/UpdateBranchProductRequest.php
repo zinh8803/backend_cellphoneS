@@ -10,10 +10,8 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     @OA\Property(property="branch_id", type="integer"),
  *     @OA\Property(property="product_variant_id", type="integer"),
- *     @OA\Property(property="price", type="string"),
- *     @OA\Property(property="stock", type="string"),
- *     @OA\Property(property="status", type="string"),
- *     @OA\Property(property="created_at", type="string"),
+ *     @OA\Property(property="price", type="number", format="float"),
+ *     @OA\Property(property="status", type="enum", enum={"active", "inactive"}),
  * )
  */
 class UpdateBranchProductRequest extends FormRequest
@@ -26,12 +24,10 @@ class UpdateBranchProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'branch_id' => 'sometimes|integer',
-            'product_variant_id' => 'sometimes|integer',
-            'price' => 'sometimes|nullable|string',
-            'stock' => 'sometimes|nullable|string',
-            'status' => 'sometimes|nullable|string',
-            'created_at' => 'sometimes|nullable|string',
+            'branch_id' => 'sometimes|integer|exists:branches,id',
+            'product_variant_id' => 'sometimes|integer|exists:product_variants,id',
+            'price' => 'sometimes|nullable|numeric|min:0',
+            'status' => 'sometimes|nullable|in:active,inactive',
         ];
     }
 }

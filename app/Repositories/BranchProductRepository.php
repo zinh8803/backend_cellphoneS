@@ -12,6 +12,19 @@ class BranchProductRepository extends BasicRepository
         parent::__construct($BranchProductModel);
     }
 
+    public function all($params = [])
+    {
+        $query = $this->model->newQuery()->with([
+            'branch',
+            'productVariant',
+        ]);
+
+        return $this->paging($query);
+    }
+    public function store($data)
+    {
+        return parent::store($data);
+    }
     public function search($params = [])
     {
         $query = $this->model->newQuery();

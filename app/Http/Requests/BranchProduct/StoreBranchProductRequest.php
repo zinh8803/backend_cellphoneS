@@ -3,6 +3,7 @@
 namespace App\Http\Requests\BranchProduct;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Schema(
@@ -10,10 +11,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     @OA\Property(property="branch_id", type="integer"),
  *     @OA\Property(property="product_variant_id", type="integer"),
- *     @OA\Property(property="price", type="string"),
- *     @OA\Property(property="stock", type="string"),
- *     @OA\Property(property="status", type="string"),
- *     @OA\Property(property="created_at", type="string"),
+ *     @OA\Property(property="price", type="number", format="float"),
  * )
  */
 class StoreBranchProductRequest extends FormRequest
@@ -26,12 +24,9 @@ class StoreBranchProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'branch_id' => 'sometimes|integer',
-            'product_variant_id' => 'sometimes|integer',
-            'price' => 'sometimes|nullable|string',
-            'stock' => 'sometimes|nullable|string',
-            'status' => 'sometimes|nullable|string',
-            'created_at' => 'sometimes|nullable|string',
+            'branch_id' => 'required|integer|exists:branches,id',
+            'product_variant_id' => 'required|integer|exists:product_variants,id',
+            'price' => 'sometimes|nullable|numeric|min:0',
         ];
     }
 }
