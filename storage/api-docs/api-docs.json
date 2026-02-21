@@ -9915,16 +9915,8 @@
                         "type": "integer"
                     },
                     "price": {
-                        "type": "string"
-                    },
-                    "stock": {
-                        "type": "string"
-                    },
-                    "status": {
-                        "type": "string"
-                    },
-                    "created_at": {
-                        "type": "string"
+                        "type": "number",
+                        "format": "float"
                     }
                 },
                 "type": "object"
@@ -9938,16 +9930,15 @@
                         "type": "integer"
                     },
                     "price": {
-                        "type": "string"
-                    },
-                    "stock": {
-                        "type": "string"
+                        "type": "number",
+                        "format": "float"
                     },
                     "status": {
-                        "type": "string"
-                    },
-                    "created_at": {
-                        "type": "string"
+                        "type": "enum",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ]
                     }
                 },
                 "type": "object"
@@ -10641,9 +10632,6 @@
                     },
                     "storage_id": {
                         "type": "integer"
-                    },
-                    "sku": {
-                        "type": "string"
                     }
                 },
                 "type": "object"
@@ -10658,9 +10646,6 @@
                     },
                     "storage_id": {
                         "type": "integer"
-                    },
-                    "sku": {
-                        "type": "string"
                     }
                 },
                 "type": "object"

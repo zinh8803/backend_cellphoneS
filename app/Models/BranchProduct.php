@@ -15,7 +15,6 @@ class BranchProduct extends Model
         'price',
         'stock',
         'status',
-        'created_at',
     ];
     public function branch()
     {

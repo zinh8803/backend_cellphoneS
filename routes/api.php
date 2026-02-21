@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\BranchController;
+use App\Http\Controllers\Api\Admin\BranchProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,6 +12,7 @@ use App\Http\Controllers\Api\Admin\ColorController;
 use App\Http\Controllers\Api\Admin\EmployeeController;
 use App\Http\Controllers\Api\Admin\ImageController;
 use App\Http\Controllers\Api\Admin\ProductController;
+use App\Http\Controllers\Api\Admin\ProductVariantController;
 use App\Http\Controllers\Api\Admin\TagController;
 use L5Swagger\Http\Controllers\SwaggerController;
 use App\Http\Controllers\ApiDocController;
@@ -132,6 +134,28 @@ Route::prefix('products')->group(function () {
     });
 });
 
+//product variant routes
+Route::prefix('product-variants')->group(function () {
+    Route::get('/', [ProductVariantController::class, 'index']);
+    Route::get('/search', [ProductVariantController::class, 'search']);
+    Route::get('/{id}', [ProductVariantController::class, 'show']);
+    Route::middleware(['auth:api', 'admin'])->group(function () {
+        Route::post('/', [ProductVariantController::class, 'store']);
+        Route::post('/{id}', [ProductVariantController::class, 'update']);
+        Route::delete('/{id}', [ProductVariantController::class, 'destroy']);
+    });
+});
+
+Route::prefix('branch-products')->group(function () {
+    Route::get('/', [BranchProductController::class, 'index']);
+    Route::get('/search', [BranchProductController::class, 'search']);
+    Route::get('/{id}', [BranchProductController::class, 'show']);
+    Route::middleware(['auth:api', 'admin'])->group(function () {
+        Route::post('/', [BranchProductController::class, 'store']);
+        Route::post('/{id}', [BranchProductController::class, 'update']);
+        Route::delete('/{id}', [BranchProductController::class, 'destroy']);
+    });
+});
 // AUTO-GENERATED CRUD ROUTES START
 
 
