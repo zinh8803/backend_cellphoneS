@@ -9,7 +9,6 @@ use Illuminate\Foundation\Http\FormRequest;
  *     schema="StoreBrandRequest",
  *     required={"name", "slug"},
  *     @OA\Property(property="name", type="string", example="Apple"),
- *     @OA\Property(property="slug", type="string", example="apple"),
  * )
  */
 class StoreBrandRequest extends FormRequest
@@ -23,7 +22,6 @@ class StoreBrandRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255|unique:brands,name',
-            'slug' => 'required|string|max:255|unique:brands,slug',
         ];
     }
 
@@ -34,10 +32,6 @@ class StoreBrandRequest extends FormRequest
             'name.string' => 'Tên brand phải là chuỗi ký tự.',
             'name.max' => 'Tên brand không được vượt quá 255 ký tự.',
             'name.unique' => 'Tên brand đã tồn tại.',
-            'slug.required' => 'Slug là bắt buộc.',
-            'slug.string' => 'Slug phải là chuỗi ký tự.',
-            'slug.max' => 'Slug không được vượt quá 255 ký tự.',
-            'slug.unique' => 'Slug đã tồn tại.',
         ];
     }
 }

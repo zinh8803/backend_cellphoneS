@@ -8,6 +8,8 @@ use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProductController extends Controller
 {
@@ -125,7 +127,13 @@ class ProductController extends Controller
      *     path="/api/products",
      *     summary="Tạo sản phẩm",
      *     tags={"Product"},
-     *     @OA\RequestBody(required=true, @OA\JsonContent(ref="#/components/schemas/StoreProductRequest")),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(ref="#/components/schemas/StoreProductRequest")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Tạo thành công",
@@ -135,17 +143,27 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $product = $this->productService->store($request->all());
+        $payload = array_merge($request->except('image_files'), [
+            'image_files' => $this->extractImageFiles($request),
+        ]);
+
+        $product = $this->productService->store($payload);
         return response()->json(['data' => new ProductResource($product)], 201);
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/products/{id}",
      *     summary="Cập nhật sản phẩm",
      *     tags={"Product"},
      *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
-     *     @OA\RequestBody(required=true, @OA\JsonContent(ref="#/components/schemas/UpdateProductRequest")),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(ref="#/components/schemas/UpdateProductRequest")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Cập nhật thành công",
@@ -156,7 +174,11 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        $product = $this->productService->update($id, $request->all());
+        $payload = array_merge($request->except('image_files'), [
+            'image_files' => $this->extractImageFiles($request),
+        ]);
+
+        $product = $this->productService->update($id, $payload);
         if (!$product) {
             return response()->json(['message' => 'Not found'], 404);
         }
@@ -181,5 +203,53 @@ class ProductController extends Controller
     {
         $deleted = $this->productService->destroy($id);
         return response()->json(['success' => (bool) $deleted], 200);
+    }
+
+    private function extractImageFiles(Request $request): array
+    {
+        $allFiles = $request->allFiles();
+        $imageFiles = [];
+        $seen = [];
+
+        $flatten = function ($value) use (&$flatten, &$imageFiles, &$seen): void {
+            if ($value instanceof UploadedFile) {
+                $objectId = spl_object_id($value);
+                if (!isset($seen[$objectId])) {
+                    $seen[$objectId] = true;
+                    $imageFiles[] = $value;
+                }
+                return;
+            }
+
+            if (!is_array($value)) {
+                return;
+            }
+
+            foreach ($value as $item) {
+                $flatten($item);
+            }
+        };
+
+        $flatten($request->file('image_files'));
+        $flatten($request->file('image_files[]'));
+
+        foreach ($allFiles as $key => $value) {
+            if (str_starts_with((string) $key, 'image_files')) {
+                $flatten($value);
+            }
+        }
+
+        $fileNames = array_map(function ($file) {
+            return $file instanceof UploadedFile ? $file->getClientOriginalName() : '';
+        }, $imageFiles);
+
+        $rawFileKeys = array_keys($allFiles);
+        Log::info('ProductController image_files input', [
+            'raw_keys' => $rawFileKeys,
+            'count' => count($imageFiles),
+            'files' => $fileNames,
+        ]);
+
+        return $imageFiles;
     }
 }

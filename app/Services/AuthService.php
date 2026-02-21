@@ -125,17 +125,18 @@ class AuthService
     {
         if (isset($data['image']) && $data['image'] instanceof UploadedFile && $data['image']->isValid()) {
             try {
-                $imageUrl = ImageHelper::uploadImage($data['image'], 'products');
-                //  Log::info('Image uploaded successfully', ['image_url' => $imageUrl]);
-                if ($imageUrl) {
-                    $data['image_url'] = $imageUrl;
+                $uploadResult = ImageHelper::uploadImage($data['image'], 'products');
+                //  Log::info('Image uploaded successfully', ['image_url' => $uploadResult]);
+                if (!empty($uploadResult) && !empty($uploadResult['url'])) {
+                    $data['image_url'] = $uploadResult['url'];
+                    $data['public_id'] = $uploadResult['public_id'] ?? null;
                 }
                 unset($data['image']);
             } catch (\Exception $e) {
                 Log::error('Image upload failed', ['error' => $e->getMessage()]);
             }
         }
-        $fields = ['name', 'phone', 'gender', 'image_url'];
+        $fields = ['name', 'phone', 'gender', 'image_url', 'public_id'];
         foreach ($fields as $field) {
             if (array_key_exists($field, $data)) {
                 $user->$field = $data[$field];

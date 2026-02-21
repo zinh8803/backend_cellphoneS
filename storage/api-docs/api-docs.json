@@ -1800,299 +1800,6 @@
                 }
             }
         },
-        "/api/cities": {
-            "get": {
-                "tags": [
-                    "City"
-                ],
-                "summary": "Danh sách City (paging)",
-                "operationId": "bba76dd7167bc2f547c0645e0c2062fe",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách City",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/City"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "City"
-                ],
-                "summary": "Tạo City",
-                "operationId": "e60d170a30d994773a8d7d852864ceb2",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/StoreCityRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Tạo thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/City"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/cities/search": {
-            "get": {
-                "tags": [
-                    "City"
-                ],
-                "summary": "Tìm kiếm City (paging)",
-                "operationId": "761964e5b7780483ed71e2f132bbc709",
-                "parameters": [
-                    {
-                        "name": "keyword",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách City",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/City"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/cities/{id}": {
-            "get": {
-                "tags": [
-                    "City"
-                ],
-                "summary": "Chi tiết City",
-                "operationId": "3d154ffc1abfd6c038e8aeae242d9c01",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Chi tiết City",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/City"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "City"
-                ],
-                "summary": "Cập nhật City",
-                "operationId": "9d632f67c6937a80d7d1fcd1dec65d7e",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateCityRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Cập nhật thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/City"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "City"
-                ],
-                "summary": "Xóa City",
-                "operationId": "86ae12ebf0df7a3b56325665d36d9cef",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Xóa thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/colors": {
             "get": {
                 "tags": [
@@ -6010,7 +5717,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "$ref": "#/components/schemas/StoreProductRequest"
                             }
@@ -6168,12 +5875,12 @@
                     }
                 }
             },
-            "put": {
+            "post": {
                 "tags": [
                     "Product"
                 ],
                 "summary": "Cập nhật sản phẩm",
-                "operationId": "8161b245f9294b1179db922deeea15d7",
+                "operationId": "4c991459e7c2a56af739291c176a3534",
                 "parameters": [
                     {
                         "name": "id",
@@ -6188,7 +5895,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "$ref": "#/components/schemas/UpdateProductRequest"
                             }
@@ -9184,299 +8891,6 @@
                 }
             }
         },
-        "/api/wards": {
-            "get": {
-                "tags": [
-                    "Ward"
-                ],
-                "summary": "Danh sách Ward (paging)",
-                "operationId": "155c7c848a7ed353e560ce128a38e665",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách Ward",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Ward"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Ward"
-                ],
-                "summary": "Tạo Ward",
-                "operationId": "2f98c7595ff5d3659c7345cbb0bc9b0f",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/StoreWardRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Tạo thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/Ward"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/wards/search": {
-            "get": {
-                "tags": [
-                    "Ward"
-                ],
-                "summary": "Tìm kiếm Ward (paging)",
-                "operationId": "37fcf2e372cc344aba1c7cd041a19349",
-                "parameters": [
-                    {
-                        "name": "keyword",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách Ward",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Ward"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/wards/{id}": {
-            "get": {
-                "tags": [
-                    "Ward"
-                ],
-                "summary": "Chi tiết Ward",
-                "operationId": "b7b7494ecf09e1b4e586f4caa756fa3e",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Chi tiết Ward",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Ward"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Ward"
-                ],
-                "summary": "Cập nhật Ward",
-                "operationId": "e1c85774015dfe10f0ceda6588009813",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateWardRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Cập nhật thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/Ward"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Ward"
-                ],
-                "summary": "Xóa Ward",
-                "operationId": "94e9c368a9a092c8afd7a91dd6e12804",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Xóa thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/auth/users": {
             "get": {
                 "tags": [
@@ -9847,6 +9261,592 @@
                     }
                 }
             }
+        },
+        "/api/cities": {
+            "get": {
+                "tags": [
+                    "City"
+                ],
+                "summary": "Danh sách City (paging)",
+                "operationId": "185d0aefb5fd6e9d4e5f1263e2734df4",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items_per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Danh sách City",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/City"
+                                            }
+                                        },
+                                        "paginate": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "City"
+                ],
+                "summary": "Tạo City",
+                "operationId": "2c088ea7c660d40e5d092a82ee72e2eb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreCityRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tạo thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/City"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cities/search": {
+            "get": {
+                "tags": [
+                    "City"
+                ],
+                "summary": "Tìm kiếm City (paging)",
+                "operationId": "b7d1d2575004e2b35bd1bbc77f01f555",
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items_per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Danh sách City",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/City"
+                                            }
+                                        },
+                                        "paginate": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cities/{id}": {
+            "get": {
+                "tags": [
+                    "City"
+                ],
+                "summary": "Chi tiết City",
+                "operationId": "87b6e2f2af6fbfa74374d2f9e3512d76",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Chi tiết City",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/City"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "City"
+                ],
+                "summary": "Cập nhật City",
+                "operationId": "f7f6f540808f4308195e750cfb3849f8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCityRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/City"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "City"
+                ],
+                "summary": "Xóa City",
+                "operationId": "0dc95dd0bc4da8cabcb3ebd5b105a59b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Xóa thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/wards": {
+            "get": {
+                "tags": [
+                    "Ward"
+                ],
+                "summary": "Danh sách Ward (paging)",
+                "operationId": "137e26407b4ea73d48e0f237d680ec69",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items_per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Danh sách Ward",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Ward"
+                                            }
+                                        },
+                                        "paginate": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Ward"
+                ],
+                "summary": "Tạo Ward",
+                "operationId": "fb0bce233f5d654e01e558062610eb57",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreWardRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tạo thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Ward"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/wards/search": {
+            "get": {
+                "tags": [
+                    "Ward"
+                ],
+                "summary": "Tìm kiếm Ward (paging)",
+                "operationId": "28b60dfefee11198ae2316401851f69f",
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items_per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Danh sách Ward",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Ward"
+                                            }
+                                        },
+                                        "paginate": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/wards/{id}": {
+            "get": {
+                "tags": [
+                    "Ward"
+                ],
+                "summary": "Chi tiết Ward",
+                "operationId": "1ac49ba971c0e78e0d3d2a6ee525fc3d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Chi tiết Ward",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ward"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Ward"
+                ],
+                "summary": "Cập nhật Ward",
+                "operationId": "2f765f7caf9be4ad50107ed815118de3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateWardRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Ward"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Ward"
+                ],
+                "summary": "Xóa Ward",
+                "operationId": "a94b4b4bfeb68cee2e48079d2689c502",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Xóa thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -9995,10 +9995,6 @@
                     "name": {
                         "type": "string",
                         "example": "Apple"
-                    },
-                    "slug": {
-                        "type": "string",
-                        "example": "apple"
                     }
                 },
                 "type": "object"
@@ -10008,10 +10004,6 @@
                     "name": {
                         "type": "string",
                         "example": "Apple"
-                    },
-                    "slug": {
-                        "type": "string",
-                        "example": "apple"
                     }
                 },
                 "type": "object"
@@ -10069,10 +10061,6 @@
                     "name": {
                         "type": "string",
                         "example": "Phone"
-                    },
-                    "slug": {
-                        "type": "string",
-                        "example": "phone"
                     }
                 },
                 "type": "object"
@@ -10082,10 +10070,6 @@
                     "name": {
                         "type": "string",
                         "example": "Phone"
-                    },
-                    "slug": {
-                        "type": "string",
-                        "example": "phone"
                     }
                 },
                 "type": "object"
@@ -10689,26 +10673,27 @@
                 ],
                 "properties": {
                     "name": {
+                        "description": "Tên sản phẩm",
                         "type": "string",
                         "example": "iPhone 15"
                     },
-                    "slug": {
-                        "type": "string",
-                        "example": "iphone-15"
-                    },
                     "description": {
+                        "description": "Mô tả sản phẩm",
                         "type": "string",
                         "example": "..."
                     },
                     "brand_id": {
+                        "description": "ID thương hiệu",
                         "type": "integer",
                         "example": 1
                     },
                     "category_id": {
+                        "description": "ID danh mục",
                         "type": "integer",
                         "example": 1
                     },
-                    "tag_ids": {
+                    "tag_ids[]": {
+                        "description": "Danh sách tag id (key lặp: tag_ids[])",
                         "type": "array",
                         "items": {
                             "type": "integer"
@@ -10718,24 +10703,12 @@
                             2
                         ]
                     },
-                    "images": {
+                    "image_files[]": {
+                        "description": "Danh sách ảnh upload (key lặp: image_files[])",
                         "type": "array",
                         "items": {
-                            "properties": {
-                                "id": {
-                                    "type": "integer",
-                                    "example": 1
-                                },
-                                "url": {
-                                    "type": "string",
-                                    "example": "https://example.com/image.jpg"
-                                },
-                                "is_primary": {
-                                    "type": "boolean",
-                                    "example": true
-                                }
-                            },
-                            "type": "object"
+                            "type": "string",
+                            "format": "binary"
                         }
                     }
                 },
@@ -10744,26 +10717,27 @@
             "UpdateProductRequest": {
                 "properties": {
                     "name": {
+                        "description": "Tên sản phẩm",
                         "type": "string",
                         "example": "iPhone 15"
                     },
-                    "slug": {
-                        "type": "string",
-                        "example": "iphone-15"
-                    },
                     "description": {
+                        "description": "Mô tả sản phẩm",
                         "type": "string",
                         "example": "..."
                     },
                     "brand_id": {
+                        "description": "ID thương hiệu",
                         "type": "integer",
                         "example": 1
                     },
                     "category_id": {
+                        "description": "ID danh mục",
                         "type": "integer",
                         "example": 1
                     },
-                    "tag_ids": {
+                    "tag_ids[]": {
+                        "description": "Danh sách tag id (key lặp: tag_ids[])",
                         "type": "array",
                         "items": {
                             "type": "integer"
@@ -10773,24 +10747,12 @@
                             2
                         ]
                     },
-                    "images": {
+                    "image_files[]": {
+                        "description": "Danh sách ảnh upload (key lặp: image_files[])",
                         "type": "array",
                         "items": {
-                            "properties": {
-                                "id": {
-                                    "type": "integer",
-                                    "example": 1
-                                },
-                                "url": {
-                                    "type": "string",
-                                    "example": "https://example.com/image.jpg"
-                                },
-                                "is_primary": {
-                                    "type": "boolean",
-                                    "example": true
-                                }
-                            },
-                            "type": "object"
+                            "type": "string",
+                            "format": "binary"
                         }
                     }
                 },
@@ -11922,10 +11884,6 @@
             "description": "Quản lý danh mục"
         },
         {
-            "name": "City",
-            "description": "CRUD City"
-        },
-        {
             "name": "Color",
             "description": "Quản lý màu sắc"
         },
@@ -12018,12 +11976,16 @@
             "description": "CRUD User"
         },
         {
-            "name": "Ward",
-            "description": "CRUD Ward"
-        },
-        {
             "name": "Auth",
             "description": "Quản lý xác thực người dùng"
+        },
+        {
+            "name": "City",
+            "description": "CRUD City"
+        },
+        {
+            "name": "Ward",
+            "description": "CRUD Ward"
         },
         {
             "name": "Health Check",

@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Helpers\ImageHelper;
 use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\ProductRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProductService
 {
@@ -72,6 +74,13 @@ class ProductService
 
     public function destroy($id)
     {
+        $product = $this->productRepository->show($id);
+        if (!$product) {
+            return false;
+        }
+
+        $this->deleteProductImagesFromCloudinary($product);
+
         return $this->productRepository->destroy($id);
     }
 
@@ -86,43 +95,71 @@ class ProductService
             }
         }
 
-        // Support two formats:
-        // 1) image_ids: [1,2]
-        // 2) images: [{"id":1,"is_primary":true}] or [{"url":"http...","is_primary":true}]
-        if (array_key_exists('image_ids', $data) && is_array($data['image_ids'])) {
-            $product->productImages()->delete();
-            foreach ($data['image_ids'] as $index => $imageId) {
-                if (!empty($imageId)) {
-                    $product->productImages()->create([
-                        'image_id' => $imageId,
-                        'is_primary' => $index === 0,
-                    ]);
-                }
+        // Support form-data image_files only: [UploadedFile, ...] (upload Cloudinary)
+        if (array_key_exists('image_files', $data)) {
+            $uploadedFiles = $this->extractUploadedFiles($data['image_files']);
+
+            $validFiles = array_values(array_filter($uploadedFiles, function ($file) {
+                return $file instanceof UploadedFile && $file->isValid();
+            }));
+
+            if (empty($validFiles)) {
+                return;
             }
-        }
 
-        if (array_key_exists('images', $data) && is_array($data['images'])) {
+            $this->deleteProductImagesFromCloudinary($product);
             $product->productImages()->delete();
 
-            foreach ($data['images'] as $index => $img) {
-                if (!is_array($img)) {
+            $savedCount = 0;
+            foreach ($validFiles as $file) {
+                $uploadResult = ImageHelper::uploadImage($file, 'products');
+                if (empty($uploadResult) || empty($uploadResult['url'])) {
                     continue;
                 }
 
-                $imageId = $img['id'] ?? null;
-                $url = $img['url'] ?? null;
+                $imageId = Image::query()->create([
+                    'url' => $uploadResult['url'],
+                    'public_id' => $uploadResult['public_id'] ?? null,
+                ])->id;
+                $product->productImages()->create([
+                    'image_id' => $imageId,
+                    'is_primary' => $savedCount === 0,
+                ]);
 
-                if (empty($imageId) && !empty($url)) {
-                    $imageId = Image::query()->create(['url' => $url])->id;
-                }
-
-                if (!empty($imageId)) {
-                    $product->productImages()->create([
-                        'image_id' => $imageId,
-                        'is_primary' => (bool) ($img['is_primary'] ?? ($index === 0)),
-                    ]);
-                }
+                $savedCount++;
             }
         }
+    }
+
+    private function deleteProductImagesFromCloudinary(Product $product): void
+    {
+        $product->loadMissing('productImages.image');
+
+        foreach ($product->productImages as $productImage) {
+            $publicId = $productImage->image->public_id ?? null;
+            if (!empty($publicId)) {
+                ImageHelper::deleteImage($publicId);
+            }
+        }
+    }
+
+    private function extractUploadedFiles(mixed $files): array
+    {
+        if ($files instanceof UploadedFile) {
+            return [$files];
+        }
+
+        if (!is_array($files)) {
+            return [];
+        }
+
+        $result = [];
+        array_walk_recursive($files, function ($file) use (&$result) {
+            if ($file instanceof UploadedFile) {
+                $result[] = $file;
+            }
+        });
+
+        return $result;
     }
 }
