@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *     schema="StoreProductRequest",
  *     required={"name","brand_id","category_id"},
  *     @OA\Property(property="name", type="string", example="iPhone 15", description="Tên sản phẩm"),
- *     @OA\Property(property="slug", type="string", example="iphone-15", description="Slug sản phẩm"),
  *     @OA\Property(property="description", type="string", example="...", description="Mô tả sản phẩm"),
  *     @OA\Property(property="brand_id", type="integer", example=1, description="ID thương hiệu"),
  *     @OA\Property(property="category_id", type="integer", example=1, description="ID danh mục"),
@@ -40,7 +39,6 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'brand_id' => 'required|integer|exists:brands,id',
             'category_id' => 'required|integer|exists:categories,id',

@@ -13,7 +13,7 @@ class ImageHelper
      *
      * @param UploadedFile $file
      * @param string $folder
-     * @return string Image URL
+     * @return array{url: string, public_id: string|null}|null
      */
     public static function uploadImage(UploadedFile $file, string $folder = 'uploads')
     {
@@ -39,7 +39,10 @@ class ImageHelper
             //     'url' => $uploadResult['secure_url']
             // ]);
 
-            return $uploadResult['secure_url'];
+            return [
+                'url' => $uploadResult['secure_url'] ?? '',
+                'public_id' => $uploadResult['public_id'] ?? null,
+            ];
         } catch (\Exception $e) {
             Log::error('Cloudinary upload failed, fallback to local storage', [
                 'error' => $e->getMessage()
@@ -47,7 +50,39 @@ class ImageHelper
 
             // Fallback: lưu vào storage local
             $path = $file->store($folder, 'public');
-            return $path;
+            return [
+                'url' => $path,
+                'public_id' => null,
+            ];
+        }
+    }
+
+    /**
+     * Delete image from Cloudinary by public_id
+     *
+     * @param string|null $publicId
+     * @return bool
+     */
+    public static function deleteImage(?string $publicId): bool
+    {
+        if (empty($publicId)) {
+            return false;
+        }
+
+        try {
+            $cloudinary = app('cloudinary');
+            $cloudinary->uploadApi()->destroy($publicId, [
+                'resource_type' => 'image',
+            ]);
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Cloudinary delete failed', [
+                'public_id' => $publicId,
+                'error' => $e->getMessage(),
+            ]);
+
+            return false;
         }
     }
 }

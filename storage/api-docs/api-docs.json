@@ -5875,12 +5875,12 @@
                     }
                 }
             },
-            "put": {
+            "post": {
                 "tags": [
                     "Product"
                 ],
                 "summary": "Cập nhật sản phẩm",
-                "operationId": "8161b245f9294b1179db922deeea15d7",
+                "operationId": "4c991459e7c2a56af739291c176a3534",
                 "parameters": [
                     {
                         "name": "id",
@@ -10677,11 +10677,6 @@
                         "type": "string",
                         "example": "iPhone 15"
                     },
-                    "slug": {
-                        "description": "Slug sản phẩm",
-                        "type": "string",
-                        "example": "iphone-15"
-                    },
                     "description": {
                         "description": "Mô tả sản phẩm",
                         "type": "string",
@@ -10721,20 +10716,10 @@
             },
             "UpdateProductRequest": {
                 "properties": {
-                    "_method": {
-                        "description": "Dùng khi gửi POST + multipart để giả lập PUT",
-                        "type": "string",
-                        "example": "PUT"
-                    },
                     "name": {
                         "description": "Tên sản phẩm",
                         "type": "string",
                         "example": "iPhone 15"
-                    },
-                    "slug": {
-                        "description": "Slug sản phẩm",
-                        "type": "string",
-                        "example": "iphone-15"
                     },
                     "description": {
                         "description": "Mô tả sản phẩm",

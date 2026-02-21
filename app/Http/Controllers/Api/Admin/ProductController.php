@@ -152,7 +152,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/products/{id}",
      *     summary="Cập nhật sản phẩm",
      *     tags={"Product"},

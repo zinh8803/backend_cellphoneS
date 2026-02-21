@@ -74,6 +74,13 @@ class ProductService
 
     public function destroy($id)
     {
+        $product = $this->productRepository->show($id);
+        if (!$product) {
+            return false;
+        }
+
+        $this->deleteProductImagesFromCloudinary($product);
+
         return $this->productRepository->destroy($id);
     }
 
@@ -92,30 +99,46 @@ class ProductService
         if (array_key_exists('image_files', $data)) {
             $uploadedFiles = $this->extractUploadedFiles($data['image_files']);
 
-            if (empty($uploadedFiles)) {
+            $validFiles = array_values(array_filter($uploadedFiles, function ($file) {
+                return $file instanceof UploadedFile && $file->isValid();
+            }));
+
+            if (empty($validFiles)) {
                 return;
             }
 
+            $this->deleteProductImagesFromCloudinary($product);
             $product->productImages()->delete();
 
             $savedCount = 0;
-            foreach ($uploadedFiles as $file) {
-                if (!$file instanceof UploadedFile || !$file->isValid()) {
+            foreach ($validFiles as $file) {
+                $uploadResult = ImageHelper::uploadImage($file, 'products');
+                if (empty($uploadResult) || empty($uploadResult['url'])) {
                     continue;
                 }
 
-                $imageUrl = ImageHelper::uploadImage($file, 'products');
-                if (empty($imageUrl)) {
-                    continue;
-                }
-
-                $imageId = Image::query()->create(['url' => $imageUrl])->id;
+                $imageId = Image::query()->create([
+                    'url' => $uploadResult['url'],
+                    'public_id' => $uploadResult['public_id'] ?? null,
+                ])->id;
                 $product->productImages()->create([
                     'image_id' => $imageId,
                     'is_primary' => $savedCount === 0,
                 ]);
 
                 $savedCount++;
+            }
+        }
+    }
+
+    private function deleteProductImagesFromCloudinary(Product $product): void
+    {
+        $product->loadMissing('productImages.image');
+
+        foreach ($product->productImages as $productImage) {
+            $publicId = $productImage->image->public_id ?? null;
+            if (!empty($publicId)) {
+                ImageHelper::deleteImage($publicId);
             }
         }
     }

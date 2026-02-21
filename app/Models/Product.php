@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -16,6 +17,16 @@ class Product extends Model
         'category_id',
         'brand_id',
     ];
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+    protected static function booted()
+    {
+        static::creating(function ($product) {
+            $product->slug = Str::slug($product->name);
+        });
+    }
     public function brand()
     {
         return $this->belongsTo(Brand::class);
