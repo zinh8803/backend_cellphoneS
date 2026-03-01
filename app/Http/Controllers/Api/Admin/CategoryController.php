@@ -126,7 +126,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $category = $this->categoryService->store($request->only(['name', 'slug']));
+        $category = $this->categoryService->store($request->only(['name', 'slug', 'parent_id']));
         return response()->json(['data' => new CategoryResource($category)], 201);
     }
 
