@@ -10045,13 +10045,17 @@
             },
             "StoreCategoryRequest": {
                 "required": [
-                    "name",
-                    "slug"
+                    "name"
                 ],
                 "properties": {
                     "name": {
                         "type": "string",
                         "example": "Phone"
+                    },
+                    "parent_id": {
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -10061,6 +10065,11 @@
                     "name": {
                         "type": "string",
                         "example": "Phone"
+                    },
+                    "parent_id": {
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
                     }
                 },
                 "type": "object"
