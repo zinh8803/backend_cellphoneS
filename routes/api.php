@@ -11,6 +11,9 @@ use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\ColorController;
 use App\Http\Controllers\Api\Admin\EmployeeController;
 use App\Http\Controllers\Api\Admin\ImageController;
+use App\Http\Controllers\Api\Admin\InventoryTransactionController;
+use App\Http\Controllers\Api\Admin\InventoryTransactionItemController;
+use App\Http\Controllers\Api\Admin\InventoryTypeController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ProductVariantController;
 use App\Http\Controllers\Api\Admin\TagController;
@@ -110,17 +113,6 @@ Route::prefix('tags')->group(function () {
     });
 });
 
-// Image routes
-Route::prefix('images')->group(function () {
-    Route::get('/', [ImageController::class, 'index']);
-    Route::get('/search', [ImageController::class, 'search']);
-    Route::get('/{id}', [ImageController::class, 'show']);
-    Route::middleware(['auth:api', 'admin'])->group(function () {
-        Route::post('/', [ImageController::class, 'store']);
-        Route::put('/{id}', [ImageController::class, 'update']);
-        Route::delete('/{id}', [ImageController::class, 'destroy']);
-    });
-});
 
 // Product routes
 Route::prefix('products')->group(function () {
@@ -155,6 +147,33 @@ Route::prefix('branch-products')->group(function () {
         Route::post('/{id}', [BranchProductController::class, 'update']);
         Route::delete('/{id}', [BranchProductController::class, 'destroy']);
     });
+});
+
+// Inventory routes
+Route::middleware('auth:api')->group(function () {
+    Route::prefix('inventory-types')->group(function () {
+        Route::get('/', [InventoryTypeController::class, 'index']);
+        Route::get('/search', [InventoryTypeController::class, 'search']);
+        Route::get('/{id}', [InventoryTypeController::class, 'show']);
+        Route::middleware('admin')->group(function () {
+            Route::post('/', [InventoryTypeController::class, 'store']);
+            Route::put('/{id}', [InventoryTypeController::class, 'update']);
+            Route::delete('/{id}', [InventoryTypeController::class, 'destroy']);
+        });
+    });
+
+    Route::prefix('inventory-transactions')->group(function () {
+        Route::get('/', [InventoryTransactionController::class, 'index']);
+        Route::get('/search', [InventoryTransactionController::class, 'search']);
+        Route::get('/{id}', [InventoryTransactionController::class, 'show']);
+        Route::middleware('admin')->group(function () {
+            Route::post('/', [InventoryTransactionController::class, 'store']);
+            Route::put('/{id}', [InventoryTransactionController::class, 'update']);
+            Route::delete('/{id}', [InventoryTransactionController::class, 'destroy']);
+        });
+    });
+
+   
 });
 // AUTO-GENERATED CRUD ROUTES START
 

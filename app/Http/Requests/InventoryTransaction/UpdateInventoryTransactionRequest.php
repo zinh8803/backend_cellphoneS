@@ -9,11 +9,19 @@ use Illuminate\Foundation\Http\FormRequest;
  *     schema="UpdateInventoryTransactionRequest",
  *     type="object",
  *     @OA\Property(property="branch_id", type="integer"),
- *     @OA\Property(property="type_id", type="integer"),
+ *     @OA\Property(property="inventory_type_id", type="integer"),
  *     @OA\Property(property="code", type="string"),
  *     @OA\Property(property="note", type="string"),
- *     @OA\Property(property="created_by", type="string"),
- *     @OA\Property(property="created_at", type="string"),
+ *     @OA\Property(
+ *         property="items",
+ *         type="array",
+ *         @OA\Items(
+ *             type="object",
+ *             @OA\Property(property="branch_product_id", type="integer"),
+ *             @OA\Property(property="quantity", type="integer"),
+ *             @OA\Property(property="unit_price", type="integer")
+ *         )
+ *     ),
  * )
  */
 class UpdateInventoryTransactionRequest extends FormRequest
@@ -26,12 +34,14 @@ class UpdateInventoryTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'branch_id' => 'sometimes|integer',
-            'type_id' => 'sometimes|integer',
+            'branch_id' => 'sometimes|integer|exists:branches,id',
+            'inventory_type_id' => 'sometimes|integer|exists:inventory_types,id',
             'code' => 'sometimes|nullable|string',
             'note' => 'sometimes|nullable|string',
-            'created_by' => 'sometimes|nullable|string',
-            'created_at' => 'sometimes|nullable|string',
+            'items' => 'sometimes|array',
+            'items.*.branch_product_id' => 'required|integer|exists:branch_products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+            'items.*.unit_price' => 'required|numeric|min:0',
         ];
     }
 }

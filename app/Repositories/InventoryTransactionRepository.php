@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Core\BasicRepository;
 use App\Models\InventoryTransaction;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class InventoryTransactionRepository extends BasicRepository
 {
@@ -24,5 +26,35 @@ class InventoryTransactionRepository extends BasicRepository
         }
 
         return $this->paging($query);
+    }
+
+    public function show($id)
+    {
+        return $this->model->with('items')->find($id);
+    }
+
+    public function store($data)
+    {
+        return DB::transaction(function () use ($data) {
+            $items = Arr::get($data, 'items', []);
+
+            $transaction = $this->model->create(Arr::except($data, ['items']));
+
+            if (!empty($items)) {
+                $transaction->items()->createMany($items);
+            }
+
+            return $transaction->load('items');
+        });
+    }
+
+    public function update($id, $data = [])
+    {
+        $model = $this->model->find($id);
+        if ($model) {
+            $model->update(Arr::except($data, ['items']));
+            // Optionally update items here if needed
+        }
+        return $model ? $model->load('items') : null;
     }
 }

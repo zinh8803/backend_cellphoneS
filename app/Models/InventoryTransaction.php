@@ -11,11 +11,9 @@ class InventoryTransaction extends Model
     protected $fillable = [
         'id',
         'branch_id',
-        'type_id',
+        'inventory_type_id',
         'code',
         'note',
-        'created_by',
-        'created_at',
     ];
     public function branch()
     {
@@ -23,6 +21,11 @@ class InventoryTransaction extends Model
     }
     public function inventoryType()
     {
-        return $this->belongsTo(InventoryType::class);
+        return $this->belongsTo(InventoryType::class, 'inventory_type_id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(InventoryTransactionItem::class, 'inventory_transaction_id');
     }
 }

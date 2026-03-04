@@ -3559,300 +3559,6 @@
                 }
             }
         },
-        "/api/images": {
-            "get": {
-                "tags": [
-                    "Image"
-                ],
-                "summary": "Danh sách image (paging)",
-                "operationId": "45aeebadfd9ec05a69c6e2e697d78c2e",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách image",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Image"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Image"
-                ],
-                "summary": "Tạo image",
-                "operationId": "6285829fb208d4ad4a0497b6d9cdb957",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/StoreImageRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Tạo thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/Image"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/images/search": {
-            "get": {
-                "tags": [
-                    "Image"
-                ],
-                "summary": "Tìm kiếm image (paging)",
-                "operationId": "67d0b93007ef7c986dc0edfc72338619",
-                "parameters": [
-                    {
-                        "name": "keyword",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "http"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách image",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Image"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/images/{id}": {
-            "get": {
-                "tags": [
-                    "Image"
-                ],
-                "summary": "Chi tiết image",
-                "operationId": "942283a7033b2e463ed85feafd50cd0b",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Chi tiết image",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Image"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Image"
-                ],
-                "summary": "Cập nhật image",
-                "operationId": "9758c75e2884c4bf21a4066865c9201f",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateImageRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Cập nhật thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/Image"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Image"
-                ],
-                "summary": "Xóa image",
-                "operationId": "e6a7fb9883e69c5f88fe23ee2b9457a0",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Xóa thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/inventory-transactions": {
             "get": {
                 "tags": [
@@ -4115,299 +3821,6 @@
                 ],
                 "summary": "Xóa InventoryTransaction",
                 "operationId": "bac8e5989bd4d3457034501cb0564bdc",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Xóa thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/inventory-transaction-items": {
-            "get": {
-                "tags": [
-                    "InventoryTransactionItem"
-                ],
-                "summary": "Danh sách InventoryTransactionItem (paging)",
-                "operationId": "e14e4e68375400c1d1d7633199bfaf02",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách InventoryTransactionItem",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/InventoryTransactionItem"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "InventoryTransactionItem"
-                ],
-                "summary": "Tạo InventoryTransactionItem",
-                "operationId": "62815eca489702f2cf9aff2c5da759a7",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/StoreInventoryTransactionItemRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Tạo thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/InventoryTransactionItem"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/inventory-transaction-items/search": {
-            "get": {
-                "tags": [
-                    "InventoryTransactionItem"
-                ],
-                "summary": "Tìm kiếm InventoryTransactionItem (paging)",
-                "operationId": "504cb01798797c2131353bf81a36d854",
-                "parameters": [
-                    {
-                        "name": "keyword",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách InventoryTransactionItem",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/InventoryTransactionItem"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/inventory-transaction-items/{id}": {
-            "get": {
-                "tags": [
-                    "InventoryTransactionItem"
-                ],
-                "summary": "Chi tiết InventoryTransactionItem",
-                "operationId": "f60a13660b90d2c4c5813aa2151279ae",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Chi tiết InventoryTransactionItem",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/InventoryTransactionItem"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "InventoryTransactionItem"
-                ],
-                "summary": "Cập nhật InventoryTransactionItem",
-                "operationId": "c9e48bf7aa980f89ef82978e5185019b",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateInventoryTransactionItemRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Cập nhật thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/InventoryTransactionItem"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "InventoryTransactionItem"
-                ],
-                "summary": "Xóa InventoryTransactionItem",
-                "operationId": "2714063a4da379e8249ef733999ad418",
                 "parameters": [
                     {
                         "name": "id",
@@ -10338,67 +9751,12 @@
                 },
                 "type": "object"
             },
-            "StoreImageRequest": {
-                "required": [
-                    "url"
-                ],
-                "properties": {
-                    "url": {
-                        "type": "string",
-                        "example": "https://example.com/image.jpg"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateImageRequest": {
-                "properties": {
-                    "url": {
-                        "type": "string",
-                        "example": "https://example.com/image.jpg"
-                    }
-                },
-                "type": "object"
-            },
-            "StoreInventoryTransactionItemRequest": {
-                "properties": {
-                    "transaction_id": {
-                        "type": "integer"
-                    },
-                    "branch_product_id": {
-                        "type": "integer"
-                    },
-                    "quantity": {
-                        "type": "string"
-                    },
-                    "unit_price": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "UpdateInventoryTransactionItemRequest": {
-                "properties": {
-                    "transaction_id": {
-                        "type": "integer"
-                    },
-                    "branch_product_id": {
-                        "type": "integer"
-                    },
-                    "quantity": {
-                        "type": "string"
-                    },
-                    "unit_price": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
             "StoreInventoryTransactionRequest": {
                 "properties": {
                     "branch_id": {
                         "type": "integer"
                     },
-                    "type_id": {
+                    "inventory_type_id": {
                         "type": "integer"
                     },
                     "code": {
@@ -10407,11 +9765,22 @@
                     "note": {
                         "type": "string"
                     },
-                    "created_by": {
-                        "type": "string"
-                    },
-                    "created_at": {
-                        "type": "string"
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "branch_product_id": {
+                                    "type": "integer"
+                                },
+                                "quantity": {
+                                    "type": "integer"
+                                },
+                                "unit_price": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "type": "object"
@@ -10421,7 +9790,7 @@
                     "branch_id": {
                         "type": "integer"
                     },
-                    "type_id": {
+                    "inventory_type_id": {
                         "type": "integer"
                     },
                     "code": {
@@ -10430,11 +9799,22 @@
                     "note": {
                         "type": "string"
                     },
-                    "created_by": {
-                        "type": "string"
-                    },
-                    "created_at": {
-                        "type": "string"
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "branch_product_id": {
+                                    "type": "integer"
+                                },
+                                "quantity": {
+                                    "type": "integer"
+                                },
+                                "unit_price": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "type": "object"
@@ -11187,6 +10567,11 @@
                         "type": "string",
                         "example": "phone"
                     },
+                    "parent_id": {
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
                     "created_at": {
                         "type": "string",
                         "format": "date-time",
@@ -11368,17 +10753,17 @@
                     "id": {
                         "type": "integer"
                     },
-                    "transaction_id": {
+                    "inventory_transaction_id": {
                         "type": "integer"
                     },
                     "branch_product_id": {
                         "type": "integer"
                     },
                     "quantity": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "unit_price": {
-                        "type": "string"
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -11391,7 +10776,7 @@
                     "branch_id": {
                         "type": "integer"
                     },
-                    "type_id": {
+                    "inventory_type_id": {
                         "type": "integer"
                     },
                     "code": {
@@ -11400,10 +10785,16 @@
                     "note": {
                         "type": "string"
                     },
-                    "created_by": {
-                        "type": "string"
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/InventoryTransactionItem"
+                        }
                     },
                     "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
                         "type": "string"
                     }
                 },
@@ -11902,16 +11293,8 @@
             "description": "CRUD FlashSale"
         },
         {
-            "name": "Image",
-            "description": "Quản lý hình ảnh"
-        },
-        {
             "name": "InventoryTransaction",
             "description": "CRUD InventoryTransaction"
-        },
-        {
-            "name": "InventoryTransactionItem",
-            "description": "CRUD InventoryTransactionItem"
         },
         {
             "name": "InventoryType",
