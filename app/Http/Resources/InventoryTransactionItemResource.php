@@ -10,10 +10,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     schema="InventoryTransactionItem",
  *     type="object",
  *     @OA\Property(property="id", type="integer"),
- *     @OA\Property(property="transaction_id", type="integer"),
+ *     @OA\Property(property="inventory_transaction_id", type="integer"),
  *     @OA\Property(property="branch_product_id", type="integer"),
- *     @OA\Property(property="quantity", type="string"),
- *     @OA\Property(property="unit_price", type="string"),
+ *     @OA\Property(property="quantity", type="integer"),
+ *     @OA\Property(property="unit_price", type="integer"),
  * )
  */
 class InventoryTransactionItemResource extends JsonResource
@@ -22,7 +22,7 @@ class InventoryTransactionItemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'transaction_id' => $this->transaction_id,
+            'inventory_transaction_id' => $this->inventory_transaction_id,
             'branch_product_id' => $this->branch_product_id,
             'quantity' => $this->quantity,
             'unit_price' => $this->unit_price,
