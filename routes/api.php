@@ -10,13 +10,12 @@ use App\Http\Controllers\Api\Admin\BrandController;
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\ColorController;
 use App\Http\Controllers\Api\Admin\EmployeeController;
-use App\Http\Controllers\Api\Admin\ImageController;
 use App\Http\Controllers\Api\Admin\InventoryTransactionController;
-use App\Http\Controllers\Api\Admin\InventoryTransactionItemController;
 use App\Http\Controllers\Api\Admin\InventoryTypeController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ProductVariantController;
 use App\Http\Controllers\Api\Admin\TagController;
+use App\Http\Controllers\Api\User\UserAddressController;
 use L5Swagger\Http\Controllers\SwaggerController;
 use App\Http\Controllers\ApiDocController;
 
@@ -38,6 +37,18 @@ Route::prefix('auth')->group(function () {
     });
     Route::middleware(['auth:api', 'admin'])->group(function () {
         Route::get('users', [AuthController::class, 'getAllUser']);
+    });
+});
+
+// User Address routes
+Route::prefix('user-addresses')->group(function () {
+    Route::middleware('auth:api')->group(function () {
+        Route::get('/', [UserAddressController::class, 'index']);
+        Route::get('/search', [UserAddressController::class, 'search']);
+        Route::get('/{id}', [UserAddressController::class, 'show']);
+        Route::post('/', [UserAddressController::class, 'store']);
+        Route::put('/{id}', [UserAddressController::class, 'update']);
+        Route::delete('/{id}', [UserAddressController::class, 'destroy']);
     });
 });
 
@@ -172,8 +183,30 @@ Route::middleware('auth:api')->group(function () {
             Route::delete('/{id}', [InventoryTransactionController::class, 'destroy']);
         });
     });
+});
 
-   
+// City routes
+Route::prefix('cities')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\CityController::class, 'index']);
+    Route::get('/search', [\App\Http\Controllers\Api\CityController::class, 'search']);
+    Route::get('/{id}', [\App\Http\Controllers\Api\CityController   ::class, 'show']);
+    Route::middleware(['auth:api', 'admin'])->group(function () {
+        Route::post('/', [\App\Http\Controllers\Api\CityController::class, 'store']);
+        Route::put('/{id}', [\App\Http\Controllers\Api\CityController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\Api\CityController::class, 'destroy']);
+    });
+});
+
+// Ward routes
+Route::prefix('wards')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\WardController::class, 'index']);
+    Route::get('/search', [\App\Http\Controllers\Api\WardController::class, 'search']);
+    Route::get('/{id}', [\App\Http\Controllers\Api\WardController::class, 'show']);
+    Route::middleware(['auth:api', 'admin'])->group(function () {
+        Route::post('/', [\App\Http\Controllers\Api\WardController::class, 'store']);
+        Route::put('/{id}', [\App\Http\Controllers\Api\WardController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\Api\WardController::class, 'destroy']);
+    });
 });
 // AUTO-GENERATED CRUD ROUTES START
 

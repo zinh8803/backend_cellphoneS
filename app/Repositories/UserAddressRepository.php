@@ -18,4 +18,40 @@ class UserAddressRepository extends BasicRepository
 
         return $this->paging($query);
     }
+    public function show($id)
+    {
+        return parent::show($id);
+    }
+    public function store($data)
+    {
+        return parent::store($data);
+    }
+    public function update($model, $data = [])
+    {
+        return parent::update($model, $data);
+    }
+    public function destroy($id)
+    {
+        return parent::destroy($id);
+    }
+    public function getModel($params = [])
+    {
+        return $this->all($params);
+    }
+    public function findByEmail(string $email)
+    {
+        return $this->model->where('email', $email)->first();
+    }
+    public function create(array $data)
+    {
+        return $this->store($data);
+    }
+    public function getByEmail($email)
+    {
+        return $this->findByEmail($email);
+    }
+    public function unsetDefaultForUser($userId)
+    {
+        $this->model->where('user_id', $userId)->where('is_default', true)->update(['is_default' => false]);
+    }
 }
