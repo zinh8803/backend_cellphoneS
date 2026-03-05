@@ -19,7 +19,6 @@ class UserAddress extends Model
         'receiver_name',
         'phone',
         'is_default',
-        'created_at',
     ];
     public function user()
     {
