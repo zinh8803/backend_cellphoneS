@@ -19,6 +19,7 @@ class ProductRepository extends BasicRepository
             'category',
             'productImages.image',
             'productTags.tag',
+            'productAttributeValues.attribute'
         ]);
 
         return $this->paging($query);
@@ -31,6 +32,7 @@ class ProductRepository extends BasicRepository
             'category',
             'productImages.image',
             'productTags.tag',
+            'productAttributeValues.attribute'
         ]);
 
         $keyword = $params['keyword'] ?? request()->get('keyword');
@@ -68,6 +70,7 @@ class ProductRepository extends BasicRepository
             'category',
             'productImages.image',
             'productTags.tag',
+            'productAttributeValues.attribute',
         ])->find($id);
     }
 }
