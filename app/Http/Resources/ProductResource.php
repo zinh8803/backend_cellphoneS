@@ -19,6 +19,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     @OA\Property(property="brand", ref="#/components/schemas/Brand"),
  *     @OA\Property(property="category", ref="#/components/schemas/Category"),
  *     @OA\Property(property="images", type="array", @OA\Items(ref="#/components/schemas/ProductImage")),
+ *     @OA\Property(property="product_attribute_value", type="array", @OA\Items(ref="#/components/schemas/ProductAttributeValue")),
  *     @OA\Property(property="tags", type="array", @OA\Items(ref="#/components/schemas/ProductTag")),
  *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-06-09T10:00:00Z"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-06-09T10:00:00Z"),
@@ -40,6 +41,10 @@ class ProductResource extends JsonResource
             'images' => $this->whenLoaded('productImages', function () {
                 return ProductImageResource::collection($this->productImages);
             }),
+            'product_attribute_value' => $this->whenLoaded('productAttributeValues', function () {
+                return ProductAttributeValueResource::collection($this->productAttributeValues);
+            }),
+
             'tags' => $this->whenLoaded('productTags', function () {
                 return ProductTagResource::collection($this->productTags);
             }),

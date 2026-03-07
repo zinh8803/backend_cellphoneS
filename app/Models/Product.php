@@ -57,4 +57,21 @@ class Product extends Model
             ->orderByDesc('is_primary')
             ->orderBy('id');
     }
+
+    public function productAttributeValues()
+    {
+        return $this->hasMany(ProductAttributeValue::class, 'product_id');
+    }
+
+    public function attributes()
+    {
+        return $this->hasManyThrough(
+            Attribute::class,
+            ProductAttributeValue::class,
+            'product_id',
+            'id',
+            'id',
+            'attribute_id'
+        );
+    }
 }

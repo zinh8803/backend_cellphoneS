@@ -189,7 +189,7 @@ Route::middleware('auth:api')->group(function () {
 Route::prefix('cities')->group(function () {
     Route::get('/', [\App\Http\Controllers\Api\CityController::class, 'index']);
     Route::get('/search', [\App\Http\Controllers\Api\CityController::class, 'search']);
-    Route::get('/{id}', [\App\Http\Controllers\Api\CityController   ::class, 'show']);
+    Route::get('/{id}', [\App\Http\Controllers\Api\CityController::class, 'show']);
     Route::middleware(['auth:api', 'admin'])->group(function () {
         Route::post('/', [\App\Http\Controllers\Api\CityController::class, 'store']);
         Route::put('/{id}', [\App\Http\Controllers\Api\CityController::class, 'update']);
