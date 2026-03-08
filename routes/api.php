@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Admin\InventoryTypeController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ProductVariantController;
 use App\Http\Controllers\Api\Admin\TagController;
+use App\Http\Controllers\Api\Admin\AttributeController;
 use App\Http\Controllers\Api\User\UserAddressController;
 use L5Swagger\Http\Controllers\SwaggerController;
 use App\Http\Controllers\ApiDocController;
@@ -121,6 +122,18 @@ Route::prefix('tags')->group(function () {
         Route::post('/', [TagController::class, 'store']);
         Route::put('/{id}', [TagController::class, 'update']);
         Route::delete('/{id}', [TagController::class, 'destroy']);
+    });
+});
+
+// Attribute routes
+Route::prefix('attributes')->group(function () {
+    Route::get('/', [AttributeController::class, 'index']);
+    Route::get('/search', [AttributeController::class, 'search']);
+    Route::get('/{id}', [AttributeController::class, 'show']);
+    Route::middleware(['auth:api', 'admin'])->group(function () {
+        Route::post('/', [AttributeController::class, 'store']);
+        Route::put('/{id}', [AttributeController::class, 'update']);
+        Route::delete('/{id}', [AttributeController::class, 'destroy']);
     });
 });
 

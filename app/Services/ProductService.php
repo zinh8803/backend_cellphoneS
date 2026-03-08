@@ -6,6 +6,7 @@ use App\Helpers\ImageHelper;
 use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Repositories\ProductRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -92,6 +93,24 @@ class ProductService
                 if (!empty($tagId)) {
                     $product->productTags()->create(['tag_id' => $tagId]);
                 }
+            }
+        }
+
+        if (array_key_exists('attributes', $data) && is_array($data['attributes'])) {
+            $product->productAttributeValues()->delete();
+
+            foreach ($data['attributes'] as $attribute) {
+                $attributeId = $attribute['attribute_id'] ?? null;
+                $value = $attribute['value'] ?? null;
+
+                if (empty($attributeId) || !is_scalar($value) || (string) $value === '') {
+                    continue;
+                }
+
+                $product->productAttributeValues()->create([
+                    'attribute_id' => (int) $attributeId,
+                    'value' => (string) $value,
+                ]);
             }
         }
 
