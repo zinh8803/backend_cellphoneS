@@ -23,8 +23,12 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *         property="image_files[]",
  *         type="array",
  *         description="Danh sách ảnh upload (key lặp: image_files[])",
- *         @OA\Items(type="string", format="binary")
- *     )
+ *         @OA\Items(type="string", format="binary"),
+ *     ),
+ *     @OA\Property(property="attributes[0][attribute_id]", type="integer", example=1, description="ID attribute"),
+ *     @OA\Property(property="attributes[0][value]", type="string", example="Black", description="Giá trị attribute"),
+ *     @OA\Property(property="attributes[1][attribute_id]", type="integer", example=2, description="ID attribute"),
+ *     @OA\Property(property="attributes[1][value]", type="string", example="256GB", description="Giá trị attribute")
  * )
  */
 class UpdateProductRequest extends FormRequest
@@ -43,6 +47,10 @@ class UpdateProductRequest extends FormRequest
             'category_id' => 'sometimes|required|integer|exists:categories,id',
             'tag_ids' => 'sometimes|nullable|array',
             'tag_ids.*' => 'nullable|integer|exists:tags,id',
+            'attributes' => 'sometimes|nullable|array',
+            'attributes.*' => 'array',
+            'attributes.*.attribute_id' => 'required|integer|exists:attributes,id',
+            'attributes.*.value' => 'required|string|max:255',
             'image_files' => [
                 'sometimes',
                 function ($attribute, $value, $fail) {

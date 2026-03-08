@@ -40,6 +40,300 @@
                 }
             }
         },
+        "/api/attributes": {
+            "get": {
+                "tags": [
+                    "Attribute"
+                ],
+                "summary": "Danh sách attribute (paging)",
+                "operationId": "cd967c37bf233323c7a70a6bb9fc644f",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items_per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Danh sách attribute",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Attribute"
+                                            }
+                                        },
+                                        "paginate": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Attribute"
+                ],
+                "summary": "Tạo attribute",
+                "operationId": "0f3912f0d8805947c69f7433ef103e60",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreAttributeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tạo thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Attribute"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/attributes/search": {
+            "get": {
+                "tags": [
+                    "Attribute"
+                ],
+                "summary": "Tìm kiếm attribute (paging)",
+                "operationId": "d26d39db538515767d1879b0bcaa8d84",
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Color"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items_per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Danh sách attribute",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Attribute"
+                                            }
+                                        },
+                                        "paginate": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/attributes/{id}": {
+            "get": {
+                "tags": [
+                    "Attribute"
+                ],
+                "summary": "Chi tiết attribute",
+                "operationId": "54fbeb843f4fde2c56da8a986b068442",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Chi tiết attribute",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Attribute"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Attribute"
+                ],
+                "summary": "Cập nhật attribute",
+                "operationId": "2c3079a09bcc4eb181d31f97958b02b9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAttributeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Attribute"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Attribute"
+                ],
+                "summary": "Xóa attribute",
+                "operationId": "f39d9e6747e253be28346c3eceef24c7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Xóa thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/branches": {
             "get": {
                 "tags": [
@@ -9264,6 +9558,27 @@
     },
     "components": {
         "schemas": {
+            "StoreAttributeRequest": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Color"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateAttributeRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Color"
+                    }
+                },
+                "type": "object"
+            },
             "RegisterRequest": {
                 "required": [
                     "name",
@@ -10084,6 +10399,26 @@
                             "type": "string",
                             "format": "binary"
                         }
+                    },
+                    "attributes[0][attribute_id]": {
+                        "description": "ID attribute",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "attributes[0][value]": {
+                        "description": "Giá trị attribute",
+                        "type": "string",
+                        "example": "Black"
+                    },
+                    "attributes[1][attribute_id]": {
+                        "description": "ID attribute",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "attributes[1][value]": {
+                        "description": "Giá trị attribute",
+                        "type": "string",
+                        "example": "256GB"
                     }
                 },
                 "type": "object"
@@ -10128,6 +10463,26 @@
                             "type": "string",
                             "format": "binary"
                         }
+                    },
+                    "attributes[0][attribute_id]": {
+                        "description": "ID attribute",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "attributes[0][value]": {
+                        "description": "Giá trị attribute",
+                        "type": "string",
+                        "example": "Black"
+                    },
+                    "attributes[1][attribute_id]": {
+                        "description": "ID attribute",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "attributes[1][value]": {
+                        "description": "Giá trị attribute",
+                        "type": "string",
+                        "example": "256GB"
                     }
                 },
                 "type": "object"
@@ -10329,7 +10684,8 @@
                         "type": "string"
                     },
                     "phone": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "0909123456"
                     },
                     "is_default": {
                         "type": "boolean"
@@ -10352,7 +10708,8 @@
                         "type": "string"
                     },
                     "phone": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "0909123456"
                     },
                     "is_default": {
                         "type": "boolean"
@@ -10424,6 +10781,34 @@
                     },
                     "name": {
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Attribute": {
+                "title": "Attribute Resource",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Color"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-06-09T10:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-06-09T10:00:00Z"
                     }
                 },
                 "type": "object"
@@ -10871,6 +11256,28 @@
                 },
                 "type": "object"
             },
+            "ProductAttributeValue": {
+                "title": "Product Attribute Value",
+                "properties": {
+                    "attribute_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Color"
+                    },
+                    "value": {
+                        "type": "string",
+                        "example": "Black"
+                    },
+                    "product_id": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
             "ProductImage": {
                 "title": "ProductImage Resource",
                 "properties": {
@@ -10931,6 +11338,12 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ProductImage"
+                        }
+                    },
+                    "product_attribute_value": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductAttributeValue"
                         }
                     },
                     "tags": {
@@ -11232,6 +11645,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Attribute",
+            "description": "Quản lý attribute"
+        },
         {
             "name": "Branch",
             "description": "CRUD Branch"
