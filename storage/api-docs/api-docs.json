@@ -5667,592 +5667,6 @@
                 }
             }
         },
-        "/api/product-images": {
-            "get": {
-                "tags": [
-                    "ProductImage"
-                ],
-                "summary": "Danh sách ProductImage (paging)",
-                "operationId": "89d7bbd65689adb3ab32d486c07fbfe0",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách ProductImage",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/ProductImage"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "ProductImage"
-                ],
-                "summary": "Tạo ProductImage",
-                "operationId": "a34b1a134f0de8df8da3c1a1bba94391",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/StoreProductImageRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Tạo thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/ProductImage"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/product-images/search": {
-            "get": {
-                "tags": [
-                    "ProductImage"
-                ],
-                "summary": "Tìm kiếm ProductImage (paging)",
-                "operationId": "908211017ed4e7b28587a296ab55815f",
-                "parameters": [
-                    {
-                        "name": "keyword",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách ProductImage",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/ProductImage"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/product-images/{id}": {
-            "get": {
-                "tags": [
-                    "ProductImage"
-                ],
-                "summary": "Chi tiết ProductImage",
-                "operationId": "38e585fa93668c7474c83b1db66ea32a",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Chi tiết ProductImage",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductImage"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "ProductImage"
-                ],
-                "summary": "Cập nhật ProductImage",
-                "operationId": "ce4124099affeec6e84fef57c04dce05",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateProductImageRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Cập nhật thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/ProductImage"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "ProductImage"
-                ],
-                "summary": "Xóa ProductImage",
-                "operationId": "6c0792e5703922e9a935defadb42848e",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Xóa thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/product-tags": {
-            "get": {
-                "tags": [
-                    "ProductTag"
-                ],
-                "summary": "Danh sách ProductTag (paging)",
-                "operationId": "33b780567695a3e3f3163e6a8fedf73b",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách ProductTag",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/ProductTag"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "ProductTag"
-                ],
-                "summary": "Tạo ProductTag",
-                "operationId": "46f6ee4e00218e9f6b5927998bcc7098",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/StoreProductTagRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Tạo thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/ProductTag"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/product-tags/search": {
-            "get": {
-                "tags": [
-                    "ProductTag"
-                ],
-                "summary": "Tìm kiếm ProductTag (paging)",
-                "operationId": "0b55325069ece35f55475b937caf31af",
-                "parameters": [
-                    {
-                        "name": "keyword",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "items_per_page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Danh sách ProductTag",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "items": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/ProductTag"
-                                            }
-                                        },
-                                        "paginate": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 10
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 100
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/product-tags/{id}": {
-            "get": {
-                "tags": [
-                    "ProductTag"
-                ],
-                "summary": "Chi tiết ProductTag",
-                "operationId": "256ead0b4e7d9add817d6a4244065ce2",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Chi tiết ProductTag",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductTag"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "ProductTag"
-                ],
-                "summary": "Cập nhật ProductTag",
-                "operationId": "baec1d3057756f59a5af9aa3e138f2af",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateProductTagRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Cập nhật thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/ProductTag"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Không tìm thấy"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "ProductTag"
-                ],
-                "summary": "Xóa ProductTag",
-                "operationId": "fb16e68dfbca2cf0a039ea85ede76753",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Xóa thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/product-variants": {
             "get": {
                 "tags": [
@@ -8969,6 +8383,53 @@
                 }
             }
         },
+        "/api/cart/add": {
+            "post": {
+                "tags": [
+                    "UserCart"
+                ],
+                "summary": "Thêm sản phẩm vào giỏ hàng (upsert theo branch_product_id)",
+                "operationId": "534a91ada29d41c5ad21998694ba5406",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddToCartRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CartDetail"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Không hợp lệ"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/user-addresses": {
             "get": {
                 "tags": [
@@ -9751,6 +9212,23 @@
                     },
                     "quantity": {
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "AddToCartRequest": {
+                "required": [
+                    "branch_product_id",
+                    "quantity"
+                ],
+                "properties": {
+                    "branch_product_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": 1
                     }
                 },
                 "type": "object"
@@ -10828,10 +10306,10 @@
                         "type": "string"
                     },
                     "stock": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "status": {
-                        "type": "string"
+                        "type": "boolean"
                     },
                     "created_at": {
                         "type": "string"
@@ -11718,14 +11196,6 @@
             "description": "CRUD Payment"
         },
         {
-            "name": "ProductImage",
-            "description": "CRUD ProductImage"
-        },
-        {
-            "name": "ProductTag",
-            "description": "CRUD ProductTag"
-        },
-        {
             "name": "ProductVariant",
             "description": "CRUD ProductVariant"
         },
@@ -11760,6 +11230,10 @@
         {
             "name": "City",
             "description": "CRUD City"
+        },
+        {
+            "name": "UserCart",
+            "description": "User Cart actions"
         },
         {
             "name": "UserAddress",

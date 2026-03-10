@@ -16,7 +16,9 @@ use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ProductVariantController;
 use App\Http\Controllers\Api\Admin\TagController;
 use App\Http\Controllers\Api\Admin\AttributeController;
+use App\Http\Controllers\Api\Admin\StorageController;
 use App\Http\Controllers\Api\User\UserAddressController;
+use App\Http\Controllers\Api\User\CartController as UserCartController;
 use L5Swagger\Http\Controllers\SwaggerController;
 use App\Http\Controllers\ApiDocController;
 
@@ -40,6 +42,9 @@ Route::prefix('auth')->group(function () {
         Route::get('users', [AuthController::class, 'getAllUser']);
     });
 });
+
+// Cart (User)
+Route::middleware('auth:api')->post('cart/add', [UserCartController::class, 'add']);
 
 // User Address routes
 Route::prefix('user-addresses')->group(function () {
@@ -147,6 +152,18 @@ Route::prefix('products')->group(function () {
         Route::post('/', [ProductController::class, 'store']);
         Route::post('/{id}', [ProductController::class, 'update']);
         Route::delete('/{id}', [ProductController::class, 'destroy']);
+    });
+});
+
+// Storage routes
+Route::prefix('storages')->group(function () {
+    Route::get('/', [StorageController::class, 'index']);
+    Route::get('/search', [StorageController::class, 'search']);
+    Route::get('/{id}', [StorageController::class, 'show']);
+    Route::middleware(['auth:api', 'admin'])->group(function () {
+        Route::post('/', [StorageController::class, 'store']);
+        Route::put('/{id}', [StorageController::class, 'update']);
+        Route::delete('/{id}', [StorageController::class, 'destroy']);
     });
 });
 
