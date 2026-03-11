@@ -13,8 +13,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     @OA\Property(property="branch_id", type="integer"),
  *     @OA\Property(property="product_variant_id", type="integer"),
  *     @OA\Property(property="price", type="string"),
- *     @OA\Property(property="stock", type="string"),
- *     @OA\Property(property="status", type="string"),
+ *     @OA\Property(property="stock", type="integer"),
+ *     @OA\Property(property="status", type="boolean"),
  *     @OA\Property(property="created_at", type="string"),
  * )
  */
