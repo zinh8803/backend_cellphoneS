@@ -652,6 +652,16 @@
                             "type": "integer",
                             "example": 10
                         }
+                    },
+                    {
+                        "name": "branch_id",
+                        "in": "query",
+                        "description": "Lọc theo chi nhánh (branch_id)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
                     }
                 ],
                 "responses": {

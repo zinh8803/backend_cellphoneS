@@ -19,6 +19,10 @@ class BranchProductRepository extends BasicRepository
             'productVariant',
         ]);
 
+        if (!empty($params['branch_id'])) {
+            $query->where('branch_id', $params['branch_id']);
+        }
+
         return $this->paging($query);
     }
     public function store($data)

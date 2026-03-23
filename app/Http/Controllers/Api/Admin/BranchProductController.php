@@ -32,6 +32,13 @@ class BranchProductController extends Controller
      *     tags={"BranchProduct"},
      *     @OA\Parameter(name="page", in="query", required=false, @OA\Schema(type="integer", example=1)),
      *     @OA\Parameter(name="items_per_page", in="query", required=false, @OA\Schema(type="integer", example=10)),
+     *     @OA\Parameter(
+     *         name="branch_id",
+     *         in="query",
+     *         required=false,
+     *         description="Lọc theo chi nhánh (branch_id)",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Danh sách BranchProduct",
